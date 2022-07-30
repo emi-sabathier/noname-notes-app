@@ -1,14 +1,13 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, Text} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigation from './navigation/AppNavigation';
 
 const App = () => {
-  return (
-    <SafeAreaView>
-      <ScrollView>
-        <Text>Hello</Text>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    return (
+        <NavigationContainer>
+            <AppNavigation />
+        </NavigationContainer>
+    );
 };
 
 export default App;
