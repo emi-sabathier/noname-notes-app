@@ -1,11 +1,12 @@
 // @flow
 import * as React from 'react';
-import { Pressable, StyleSheet, UITouchableHighlight, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../ui/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { RootStackParamList } from './AppNavigation';
+import { UITouchableOpacity } from '../ui/UITouchableOpacity';
 
 const HEADER_HEIGHT = 50;
 const ICON_PADDING_HORIZONTAL = 5;
@@ -20,17 +21,17 @@ export const Header = () => {
     return (
         <View style={styles.container}>
             <View>
-                <UITouchableHighlight activeOpacity={0} underlayColor="#fff" onPress={handleBack}>
+                <UITouchableOpacity activeOpacity={0} onPress={handleBack}>
                     <Icon name="arrow-left" size={30} color={colors.black} />
-                </UITouchableHighlight>
+                </UITouchableOpacity>
             </View>
             <View style={styles.rightIconsContainer}>
-                <UITouchableHighlight style={styles.iconsPadding}>
+                <UITouchableOpacity onPress={() => console.log('todo')} style={styles.iconsPadding}>
                     <Icon name="pin-outline" size={30} color={colors.black} />
-                </UITouchableHighlight>
-                <UITouchableHighlight style={styles.iconsPadding}>
+                </UITouchableOpacity>
+                <UITouchableOpacity onPress={() => console.log('todo')} style={styles.iconsPadding}>
                     <Icon name="archive-arrow-down-outline" size={30} color={colors.black} />
-                </UITouchableHighlight>
+                </UITouchableOpacity>
             </View>
         </View>
     );

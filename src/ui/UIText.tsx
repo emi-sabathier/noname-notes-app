@@ -24,7 +24,7 @@ export const textStyles = StyleSheet.create<NamedStyles<{ [K in FontsType]: Text
         fontSize: 10,
     },
     REGULAR: {
-        fontSize: 14,
+        fontSize: 16,
     },
     LARGE: {
         fontSize: 26,
