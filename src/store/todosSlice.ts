@@ -1,15 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Todo } from '../models/TodoModel';
 
-interface Todo {
-    title: string;
-    content: string;
+interface TodoState {
+    todos: Todo[];
 }
 
-interface TodosState {
-    todos: Array<Todo>;
-}
-
-const initialState: TodosState = {
+const initialState: TodoState = {
     todos: [],
 };
 
@@ -17,15 +13,14 @@ export const todosSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-        addTodo: (state, action: PayloadAction<any>) => {
+        addTodo: (state, action: PayloadAction<Todo>) => {
             return {
                 ...state,
-                todos: [action.payload],
+                todos: [...state.todos, action.payload],
             };
         },
     },
 });
 
 export const { addTodo } = todosSlice.actions;
-
 export default todosSlice.reducer;

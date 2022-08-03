@@ -21,7 +21,7 @@ export const HomeScreen = () => {
             <View style={styles.container}>
                 <StatusBar backgroundColor="#000" barStyle="light-content" />
                 <View style={styles.todosListContainer}>
-                    <UIText type="REGULAR">hello jpp</UIText>
+                    <UIText type="REGULAR">C'est trop ouf</UIText>
                 </View>
                 <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddTodo')}>
                     <Icon name="comment-plus" size={80} color="#268df57F" />

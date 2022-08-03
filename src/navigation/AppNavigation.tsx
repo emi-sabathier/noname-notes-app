@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppNavigation = () => {
     return (
         <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: 'Jpp' }} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: 'No Name App' }} />
             <Stack.Screen
                 name="AddTodo"
                 component={AddTodoScreen}
