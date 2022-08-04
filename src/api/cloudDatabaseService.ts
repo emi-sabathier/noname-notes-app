@@ -4,5 +4,11 @@ import { Todo } from '../models/TodoModel';
 const db = firestore().collection('todos');
 
 export const addToCollection = async (value: Todo): Promise<void> => {
-    await db.add(value);
+    try {
+        await db.add(value);
+    } catch (error) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+    }
 };

@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@firebase/firestore-types": "^2.5.0",
     "@react-native-firebase/app": "^15.2.0",
     "@react-native-firebase/firestore": "^15.2.0",
     "@react-navigation/native": "^6.0.11",
