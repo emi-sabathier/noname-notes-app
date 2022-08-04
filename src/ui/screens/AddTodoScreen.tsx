@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UIContainer } from '../UIContainer';
 import { UITextInput } from '../UITextInput';
 import { StyleSheet } from 'react-native';
@@ -8,13 +8,14 @@ import { useAppDispatch } from '../../store/hooks';
 import { addToCollection } from '../../api/cloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { RootStackParamList } from '../../navigation/AppNavigation';
+import { Todo } from '../../models/TodoModel';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
 export const AddTodoScreen = () => {
-    const [value, setValue] = React.useState({
+    const [value, setValue] = useState<Todo>({
         title: '',
         content: '',
     });

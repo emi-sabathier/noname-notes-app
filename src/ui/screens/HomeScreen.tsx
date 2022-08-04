@@ -7,17 +7,15 @@ import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types'
 import { RootStackParamList } from '../../navigation/AppNavigation';
 import { UITouchableOpacity } from '../UITouchableOpacity';
 import { UIContainer } from '../UIContainer';
-import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import { UITodoCard } from '../UITodoCard';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addTodo } from '../../store/todosSlice';
+import { FirestoreDocumentChange, FirestoreDocumentData, FirestoreQuerySnapshot } from '../../types/types';
 
 const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
 const HEADER_HEIGHT = 50;
-
-type DocuData = FirebaseFirestoreTypes.DocumentData;
-type DocuChange = FirebaseFirestoreTypes.DocumentChange;
 
 export const HomeScreen = (): JSX.Element => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -30,29 +28,23 @@ export const HomeScreen = (): JSX.Element => {
         (async () => {
             const unsubscribe = firestore()
                 .collection('todos')
-                .onSnapshot(snapshot => {
-                    snapshot
-                        .docChanges()
-                        .forEach(
-                            async (
-                                change: FirebaseFirestoreTypes.DocumentChange<FirebaseFirestoreTypes.DocumentData>,
-                            ) => {
-                                console.log('change', change);
-                                switch (change.type) {
-                                    case 'added':
-                                        dispatch(addTodo(change.doc.data()));
-                                        break;
-                                    case 'modified':
-                                        // TODO : update in redux
-                                        console.log('Modified: ', change.doc.data());
-                                        break;
-                                    case 'removed':
-                                        // TODO : remove in redux
-                                        console.log('Removed: ', change.doc.data());
-                                        break;
-                                }
-                            },
-                        );
+                .onSnapshot((snapshot: FirestoreQuerySnapshot): void => {
+                    snapshot.docChanges().forEach(async (change: FirestoreDocumentChange) => {
+                        const document: FirestoreDocumentData = change.doc.data();
+                        switch (change.type) {
+                            case 'added':
+                                dispatch(addTodo(document));
+                                break;
+                            case 'modified':
+                                // TODO : update in redux
+                                console.log('Modified: ', document);
+                                break;
+                            case 'removed':
+                                // TODO : remove in redux
+                                console.log('Removed: ', document);
+                                break;
+                        }
+                    });
                 });
 
             return () => unsubscribe;

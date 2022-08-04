@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Todo } from '../models/TodoModel';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { FirestoreDocumentData } from '../types/types';
 
 interface TodoState {
-    todos: Todo[];
+    todos: FirebaseFirestoreTypes.DocumentData[];
 }
 
 const initialState: TodoState = {
@@ -13,7 +14,7 @@ export const todosSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-        addTodo: (state, action: PayloadAction<Todo>) => {
+        addTodo: (state: TodoState, action: PayloadAction<FirestoreDocumentData>) => {
             return {
                 ...state,
                 todos: [...state.todos, action.payload],
