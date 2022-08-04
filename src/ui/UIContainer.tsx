@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 
 const MARGIN: number = 20;
 
@@ -10,7 +10,7 @@ type Props = {
 export const UIContainer = ({ children }: Props) => {
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollView}>{children}</ScrollView>
+            <View style={styles.view}>{children}</View>
         </SafeAreaView>
     );
 };
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    scrollView: {
+    view: {
         flex: 1,
         margin: MARGIN,
     },

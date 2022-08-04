@@ -1,8 +1,22 @@
 import firestore from '@react-native-firebase/firestore';
-import { Todo } from '../models/TodoModel';
 
 const db = firestore().collection('todos');
 
-export const addToCollection = async (value: Todo): Promise<void> => {
-    await db.add(value);
+export const TestRealtime = () => {
+    console.log('realtime');
+};
+
+export const getTodos = async () => {
+    const query = await firestore().collection('todos').get();
+    return query.docs.map(document => {
+        return document.data();
+    });
+};
+
+export const addToCollection = async (value: any): Promise<void> => {
+    try {
+        await db.add(value);
+    } catch (error) {
+        throw new Error(error);
+    }
 };
