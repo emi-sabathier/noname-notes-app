@@ -16,6 +16,7 @@ type UITodoCardProps = {
 
 export const UITodoCard = ({ todo }: UITodoCardProps): JSX.Element => {
     const dispatch = useAppDispatch();
+    const id = todo.id ?? '';
 
     return (
         <>
@@ -25,8 +26,8 @@ export const UITodoCard = ({ todo }: UITodoCardProps): JSX.Element => {
             </View>
             <UITouchableOpacity
                 onPress={async () => {
-                    await deleteDocument(todo.id);
-                    dispatch(deleteTodo(todo.id));
+                    await deleteDocument(id);
+                    dispatch(deleteTodo(id));
                 }}
                 style={styles.iconsAlign}>
                 <Icon name="trash-can-outline" size={26} color={colors.grey800} />
