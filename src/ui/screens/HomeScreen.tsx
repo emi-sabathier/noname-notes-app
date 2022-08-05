@@ -10,16 +10,25 @@ import { UIContainer } from '../UIContainer';
 import firestore from '@react-native-firebase/firestore';
 import { UITodoCard } from '../UITodoCard';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { addTodo } from '../../store/todosSlice';
-import { FirestoreDocumentChange, FirestoreDocumentData, FirestoreQuerySnapshot } from '../../types/types';
+import { addTodo, deleteTodo, updateTodo } from '../../store/todosSlice';
+import {
+    FirestoreDocumentChange,
+    FirestoreDocumentData,
+    FirestoreQueryDocumentSnapshot,
+    FirestoreQuerySnapshot,
+} from '../../types/types';
 
 const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
 const HEADER_HEIGHT = 50;
+const BORDER_WIDTH = 1;
+const BORDER_RADIUS = 10;
+const PADDING = 10;
+const MARGIN = 10;
 
 export const HomeScreen = (): JSX.Element => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const [todosList, setTodosList] = useState<any>([]);
+    const [todosList, setTodosList] = useState<any[]>([]);
     const todosRedux = useAppSelector(state => state.todos);
     const dispatch = useAppDispatch();
     console.log('todos redux', todosRedux);
@@ -28,48 +37,54 @@ export const HomeScreen = (): JSX.Element => {
         (async () => {
             const unsubscribe = firestore()
                 .collection('todos')
-                .onSnapshot((snapshot: FirestoreQuerySnapshot): void => {
-                    snapshot.docChanges().forEach(async (change: FirestoreDocumentChange) => {
-                        const document: FirestoreDocumentData = change.doc.data();
-                        switch (change.type) {
-                            case 'added':
-                                dispatch(addTodo(document));
-                                break;
-                            case 'modified':
-                                // TODO : update in redux
-                                console.log('Modified: ', document);
-                                break;
-                            case 'removed':
-                                // TODO : remove in redux
-                                console.log('Removed: ', document);
-                                break;
-                        }
-                    });
-                });
-
-            return () => unsubscribe;
-        })();
-    }, [dispatch]);
-
-    /// get les data
-    useEffect(() => {
-        (async () => {
-            const unsubscribe = firestore()
-                .collection('todos')
                 .onSnapshot(
-                    QuerySnapshot => {
-                        const documentsList = QuerySnapshot.docs.map(document => {
-                            return document.data();
-                        });
-                        setTodosList(documentsList);
+                    (snapshot: FirestoreQuerySnapshot<FirestoreDocumentData>): void => {
+                        snapshot
+                            .docChanges()
+                            .forEach(async (change: FirestoreDocumentChange<FirestoreDocumentData>) => {
+                                const document: FirestoreDocumentData = change.doc.data();
+                                switch (change.type) {
+                                    case 'added':
+                                        dispatch(addTodo(document));
+                                        break;
+                                    case 'modified':
+                                        dispatch(updateTodo(document));
+                                        break;
+                                    case 'removed':
+                                        dispatch(deleteTodo(document.id));
+                                        break;
+                                }
+                            });
                     },
-                    error => {
+                    (error: Error) => {
                         throw new Error(error.message);
                     },
                 );
             return () => unsubscribe;
         })();
     }, [dispatch]);
+
+    // get les data, les affiche
+    useEffect(() => {
+        (async () => {
+            const unsubscribe = firestore()
+                .collection('todos')
+                .onSnapshot(
+                    QuerySnapshot => {
+                        const documentsList = QuerySnapshot.docs.map(
+                            (document: FirestoreQueryDocumentSnapshot<FirestoreDocumentData>) => {
+                                return document.data();
+                            },
+                        );
+                        setTodosList(documentsList);
+                    },
+                    (error: Error) => {
+                        throw new Error(error.message);
+                    },
+                );
+            return () => unsubscribe;
+        })();
+    }, []);
 
     return (
         <UIContainer>
@@ -82,14 +97,22 @@ export const HomeScreen = (): JSX.Element => {
                                 numColumns={2}
                                 data={todosList}
                                 keyExtractor={(todo, i) => i.toString()}
-                                renderItem={({ item }) => <UITodoCard todo={item} key={item.id} />}
+                                renderItem={({ item }) => (
+                                    <UITouchableOpacity
+                                        style={styles.card}
+                                        onPress={() => navigation.navigate('ModifyTodo', { item })}>
+                                        <UITodoCard todo={item} key={item.id} />
+                                    </UITouchableOpacity>
+                                )}
                             />
                         </>
                     ) : null}
                 </View>
-                <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddTodo')}>
-                    <Icon name="comment-plus" size={80} color="#268df57F" />
-                </UITouchableOpacity>
+                <View style={styles.addIconPosition}>
+                    <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddTodo')}>
+                        <Icon name="note-plus-outline" size={80} color={colors.grey800} />
+                    </UITouchableOpacity>
+                </View>
             </View>
         </UIContainer>
     );
@@ -99,11 +122,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    card: {
+        flex: 1,
+        alignSelf: 'flex-start',
+        borderColor: colors.grey300,
+        borderWidth: BORDER_WIDTH,
+        borderRadius: BORDER_RADIUS,
+        padding: PADDING,
+        margin: MARGIN,
+    },
     todosListContainer: {
         flex: 1,
     },
-    addIcon: {
-        alignSelf: 'flex-end',
+    addIconPosition: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
     },
     headerModal: {
         marginHorizontal: MARGIN_HORIZONTAL,
@@ -113,7 +147,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     button: {
-        alignSelf: 'flex-end',
+        backgroundColor: colors.white,
     },
     buttonClose: {
         backgroundColor: '#2196F3',
