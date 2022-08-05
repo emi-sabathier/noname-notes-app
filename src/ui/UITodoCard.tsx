@@ -3,33 +3,38 @@ import { UIText } from './UIText';
 import { Todo } from '../models/TodoModel';
 import { StyleSheet, View } from 'react-native';
 import { truncate } from '../utils/truncate';
-
-const BORDER_WIDTH = 1;
-const BORDER_RADIUS = 10;
-const PADDING = 10;
-const MARGIN = 10;
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colors } from './colors';
+import { UITouchableOpacity } from './UITouchableOpacity';
+import { deleteDocument } from '../api/cloudDatabaseService';
+import { useAppDispatch } from '../store/hooks';
+import { deleteTodo } from '../store/todosSlice';
 
 type UITodoCardProps = {
     todo: Todo;
 };
 
 export const UITodoCard = ({ todo }: UITodoCardProps): JSX.Element => {
+    const dispatch = useAppDispatch();
+
     return (
-        <View style={styles.card}>
-            <UIText type="REGULAR_BOLD">{todo.title}</UIText>
-            <UIText type="REGULAR">{truncate(todo.content)}</UIText>
-        </View>
+        <>
+            <View>
+                <UIText type="REGULAR_BOLD">{todo.title}</UIText>
+                <UIText type="REGULAR">{truncate(todo.content)}</UIText>
+            </View>
+            <UITouchableOpacity
+                onPress={async () => {
+                    await deleteDocument(todo.id);
+                    dispatch(deleteTodo(todo.id));
+                }}
+                style={styles.iconsAlign}>
+                <Icon name="trash-can-outline" size={26} color={colors.grey800} />
+            </UITouchableOpacity>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
-    card: {
-        flex: 1,
-        alignSelf: 'flex-start',
-        borderColor: 'lightgrey',
-        borderWidth: BORDER_WIDTH,
-        borderRadius: BORDER_RADIUS,
-        padding: PADDING,
-        margin: MARGIN,
-    },
+    iconsAlign: { alignSelf: 'flex-end', flexDirection: 'row', marginTop: 10 },
 });

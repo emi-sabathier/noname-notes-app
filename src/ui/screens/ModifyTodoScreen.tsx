@@ -3,22 +3,30 @@ import { UIContainer } from '../UIContainer';
 import { UITextInput } from '../UITextInput';
 import { StyleSheet } from 'react-native';
 import { colors } from '../colors';
-import { useNavigation } from '@react-navigation/native';
-import { addDocument } from '../../api/cloudDatabaseService';
-import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useAppDispatch } from '../../store/hooks';
+import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { RootStackParamList } from '../../navigation/AppNavigation';
 import { Todo } from '../../models/TodoModel';
+import { updateDocument } from '../../api/cloudDatabaseService';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
-export const AddTodoScreen = () => {
-    const [value, setValue] = useState<Todo>({
-        title: '',
-        content: '',
-    });
+export const ModifyTodoScreen = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const route = useRoute<RouteProp<RootStackParamList>>();
+    const dispatch = useAppDispatch();
+    const id = route.params?.item.id ?? '';
+    const title = route.params?.item.title ?? '';
+    const content = route.params?.item.content ?? '';
+
+    const [value, setValue] = useState<Todo>({
+        id,
+        title,
+        content,
+    });
 
     const handleInputValues = (inputName: string, inputValue: string) => {
         setValue({
@@ -30,9 +38,9 @@ export const AddTodoScreen = () => {
     useEffect(
         () =>
             navigation.addListener('beforeRemove', async e => {
-                await addDocument(value);
+                await updateDocument(value);
             }),
-        [navigation, value],
+        [dispatch, navigation, value],
     );
 
     return (
