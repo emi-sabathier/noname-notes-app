@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { UIContainer } from '../UIContainer';
-import { UITextInput } from '../UITextInput';
+import { UIContainer } from '../shared/UIContainer';
+import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
-import { colors } from '../colors';
+import { colors } from '../../utils/colors';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useAppDispatch } from '../../store/hooks';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';

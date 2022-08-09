@@ -16,13 +16,21 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
     return (
-        <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: 'No Name App' }} />
+        <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{
+                    headerShown: true,
+                    headerTitle: 'No Name App',
+                }}
+            />
             <Stack.Screen
                 name="AddTodo"
                 component={AddTodoScreen}
                 options={{
-                    header: () => <Header />,
+                    header: () => null,
+                    headerTitle: () => null,
                 }}
             />
             <Stack.Screen

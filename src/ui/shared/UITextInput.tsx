@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, NativeSyntheticEvent, StyleProp, TextInputFocusEventData, TextStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, TextInput, TextInputFocusEventData, TextStyle } from 'react-native';
 
 type UITextInputProps = {
     style?: StyleProp<TextStyle>;

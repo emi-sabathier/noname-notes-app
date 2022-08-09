@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { GestureResponderEvent, StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
-import { ReactNode } from 'react';
 
 type Props = {
     children: ReactNode;

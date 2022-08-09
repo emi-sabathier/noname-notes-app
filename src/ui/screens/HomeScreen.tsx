@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../colors';
+import { colors } from '../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { RootStackParamList } from '../../navigation/AppNavigation';
-import { UITouchableOpacity } from '../UITouchableOpacity';
-import { UIContainer } from '../UIContainer';
+import { UITouchableOpacity } from '../shared/UITouchableOpacity';
+import { UIContainer } from '../shared/UIContainer';
 import firestore from '@react-native-firebase/firestore';
-import { UITodoCard } from '../UITodoCard';
+import { UITodoCard } from '../components/UITodoCard';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addTodo, deleteTodo, updateTodo } from '../../store/todosSlice';
 import {
@@ -97,13 +97,9 @@ export const HomeScreen = (): JSX.Element => {
                                 numColumns={2}
                                 data={todosList}
                                 keyExtractor={(todo, i) => i.toString()}
-                                renderItem={({ item }) => (
-                                    <UITouchableOpacity
-                                        style={styles.card}
-                                        onPress={() => navigation.navigate('ModifyTodo', { item })}>
-                                        <UITodoCard todo={item} key={item.id} />
-                                    </UITouchableOpacity>
-                                )}
+                                renderItem={({ item }) =>
+                                    item.archive ? null : <UITodoCard todo={item} key={item.id} />
+                                }
                             />
                         </>
                     ) : null}
