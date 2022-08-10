@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { GestureResponderEvent, StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 import NamedStyles = StyleSheet.NamedStyles;
 
@@ -11,7 +11,7 @@ type UITextProps = {
     type: FontsType;
 };
 
-export const UIText = ({ children, style, allowFontScaling = true, onPress, type }: UITextProps) => {
+export const UIText = ({ children, style, allowFontScaling = true, onPress, type }: UITextProps): ReactElement => {
     return (
         <Text allowFontScaling={allowFontScaling} style={[style, textStyles[type]]} onPress={onPress}>
             {children}

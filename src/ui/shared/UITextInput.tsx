@@ -1,5 +1,5 @@
-import React from 'react';
-import { TextInput, NativeSyntheticEvent, StyleProp, TextInputFocusEventData, TextStyle } from 'react-native';
+import React, { ReactElement } from 'react';
+import { NativeSyntheticEvent, StyleProp, TextInput, TextInputFocusEventData, TextStyle } from 'react-native';
 
 type UITextInputProps = {
     style?: StyleProp<TextStyle>;
@@ -9,7 +9,7 @@ type UITextInputProps = {
     value?: string;
 };
 
-export const UITextInput = ({ style, onFocus, placeholder, onChangeText, value }: UITextInputProps) => {
+export const UITextInput = ({ style, onFocus, placeholder, onChangeText, value }: UITextInputProps): ReactElement => {
     return (
         <TextInput
             style={style}

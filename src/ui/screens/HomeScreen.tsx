@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../colors';
+import { colors } from '../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { RootStackParamList } from '../../navigation/AppNavigation';
-import { UITouchableOpacity } from '../UITouchableOpacity';
-import { UIContainer } from '../UIContainer';
+import { UITouchableOpacity } from '../shared/UITouchableOpacity';
+import { UIContainer } from '../shared/UIContainer';
 import firestore from '@react-native-firebase/firestore';
-import { UITodoCard } from '../UITodoCard';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { UITodoCard } from '../components/UITodoCard';
+import { useAppDispatch } from '../../store/hooks';
 import { addTodo, deleteTodo, updateTodo } from '../../store/todosSlice';
 import {
     FirestoreDocumentChange,
@@ -26,12 +26,10 @@ const BORDER_RADIUS = 10;
 const PADDING = 10;
 const MARGIN = 10;
 
-export const HomeScreen = (): JSX.Element => {
+export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const [todosList, setTodosList] = useState<any[]>([]);
-    const todosRedux = useAppSelector(state => state.todos);
     const dispatch = useAppDispatch();
-    console.log('todos redux', todosRedux);
 
     useEffect(() => {
         (async () => {
@@ -64,7 +62,6 @@ export const HomeScreen = (): JSX.Element => {
         })();
     }, [dispatch]);
 
-    // get les data, les affiche
     useEffect(() => {
         (async () => {
             const unsubscribe = firestore()
@@ -97,13 +94,9 @@ export const HomeScreen = (): JSX.Element => {
                                 numColumns={2}
                                 data={todosList}
                                 keyExtractor={(todo, i) => i.toString()}
-                                renderItem={({ item }) => (
-                                    <UITouchableOpacity
-                                        style={styles.card}
-                                        onPress={() => navigation.navigate('ModifyTodo', { item })}>
-                                        <UITodoCard todo={item} key={item.id} />
-                                    </UITouchableOpacity>
-                                )}
+                                renderItem={({ item }) =>
+                                    item.archive ? null : <UITodoCard todo={item} key={item.id} />
+                                }
                             />
                         </>
                     ) : null}

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 
 const MARGIN: number = 20;
@@ -7,7 +7,7 @@ type Props = {
     children: ReactNode;
 };
 
-export const UIContainer = ({ children }: Props) => {
+export const UIContainer = ({ children }: Props): ReactElement => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.view}>{children}</View>

@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../ui/colors';
+import { colors } from '../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { RootStackParamList } from './AppNavigation';
-import { UITouchableOpacity } from '../ui/UITouchableOpacity';
+import { UITouchableOpacity } from '../ui/shared/UITouchableOpacity';
+import { ArchiveStatusSpecs, UIArchiveButton } from '../ui/shared/UIArchive';
 
 const HEADER_HEIGHT = 50;
 const ICON_PADDING_HORIZONTAL = 5;
 const PADDING_HORIZONTAL = 15;
 
-export const Header = () => {
+export const Header = ({ archiveStatus }: ArchiveStatusSpecs) => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const handleBack = () => {
         navigation.goBack();
@@ -28,9 +29,7 @@ export const Header = () => {
                 <UITouchableOpacity onPress={() => console.log('todo')} style={styles.iconsPadding}>
                     <Icon name="pin-outline" size={30} color={colors.black} />
                 </UITouchableOpacity>
-                <UITouchableOpacity onPress={() => console.log('todo')} style={styles.iconsPadding}>
-                    <Icon name="archive-arrow-down-outline" size={30} color={colors.black} />
-                </UITouchableOpacity>
+                <UIArchiveButton archiveStatus={archiveStatus} />
             </View>
         </View>
     );

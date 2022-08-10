@@ -1,55 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { UIContainer } from '../UIContainer';
-import { UITextInput } from '../UITextInput';
+import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
+import { UIContainer } from '../shared/UIContainer';
+import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
-import { colors } from '../colors';
+import { colors } from '../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { addDocument } from '../../api/cloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { RootStackParamList } from '../../navigation/AppNavigation';
 import { Todo } from '../../models/TodoModel';
+import { Header } from '../../navigation/Header';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
-export const AddTodoScreen = () => {
-    const [value, setValue] = useState<Todo>({
+export const AddTodoScreen: FunctionComponent = (): ReactElement => {
+    const [inputsValues, setInputValues] = useState<Todo>({
         title: '',
         content: '',
+        archive: false,
     });
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
 
     const handleInputValues = (inputName: string, inputValue: string) => {
-        setValue({
-            ...value,
+        setInputValues({
+            ...inputsValues,
             [inputName]: inputValue,
         });
     };
 
-    useEffect(
-        () =>
-            navigation.addListener('beforeRemove', async e => {
-                await addDocument(value);
-            }),
-        [navigation, value],
-    );
+    useEffect(() => {
+        const unsub = navigation.addListener('beforeRemove', async e => {
+            await addDocument({ ...inputsValues, archive: archiveStatus });
+        });
+        return () => {
+            unsub();
+        };
+    }, [navigation, inputsValues, archiveStatus]);
+
+    const archiveCallback = (archiveValue: boolean): void => {
+        setArchiveStatus(archiveValue);
+    };
 
     return (
-        <UIContainer>
-            <UITextInput
-                style={styles.inputTitle}
-                placeholder="Titre"
-                onChangeText={inputValue => handleInputValues('title', inputValue)}
-                value={value.title}
-            />
-            <UITextInput
-                style={styles.textArea}
-                placeholder="Ecrivez ici"
-                onChangeText={inputValue => handleInputValues('content', inputValue)}
-                value={value.content}
-            />
-        </UIContainer>
+        <>
+            <Header archiveStatus={archiveCallback} />
+            <UIContainer>
+                <UITextInput
+                    style={styles.inputTitle}
+                    placeholder="Titre"
+                    onChangeText={inputValue => handleInputValues('title', inputValue)}
+                    value={inputsValues.title}
+                />
+                <UITextInput
+                    style={styles.textArea}
+                    placeholder="Ecrivez ici"
+                    onChangeText={inputValue => handleInputValues('content', inputValue)}
+                    value={inputsValues.content}
+                />
+            </UIContainer>
+        </>
     );
 };
 
