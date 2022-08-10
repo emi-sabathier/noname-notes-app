@@ -30,13 +30,14 @@ export const AddTodoScreen = () => {
         });
     };
 
-    useEffect(
-        () =>
-            navigation.addListener('beforeRemove', async e => {
-                await addDocument({ ...inputsValues, archive: archiveStatus });
-            }),
-        [navigation, inputsValues, archiveStatus],
-    );
+    useEffect(() => {
+        const unsub = navigation.addListener('beforeRemove', async e => {
+            await addDocument({ ...inputsValues, archive: archiveStatus });
+        });
+        return () => {
+            unsub();
+        };
+    }, [navigation, inputsValues, archiveStatus]);
 
     const archiveCallback = (archiveValue: boolean): void => {
         setArchiveStatus(archiveValue);
