@@ -5,7 +5,7 @@ import { UITouchableOpacity } from './UITouchableOpacity';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
-import { RootStackParamList } from '../../navigation/AppNavigation';
+import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 
 const ICON_PADDING_HORIZONTAL = 5;
 
@@ -15,7 +15,7 @@ export interface ArchiveStatusSpecs {
 
 export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusSpecs): ReactElement => {
     const [archive, setArchive] = useState<boolean>(false);
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
 
     const handleArchive = async () => {
         setArchive(prevState => !prevState);

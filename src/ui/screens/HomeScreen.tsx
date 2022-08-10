@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
-import { RootStackParamList } from '../../navigation/AppNavigation';
+import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import { UIContainer } from '../shared/UIContainer';
 import firestore from '@react-native-firebase/firestore';
@@ -21,13 +21,9 @@ import {
 const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
 const HEADER_HEIGHT = 50;
-const BORDER_WIDTH = 1;
-const BORDER_RADIUS = 10;
-const PADDING = 10;
-const MARGIN = 10;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const [todosList, setTodosList] = useState<any[]>([]);
     const dispatch = useAppDispatch();
 
@@ -114,15 +110,6 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    card: {
-        flex: 1,
-        alignSelf: 'flex-start',
-        borderColor: colors.grey300,
-        borderWidth: BORDER_WIDTH,
-        borderRadius: BORDER_RADIUS,
-        padding: PADDING,
-        margin: MARGIN,
     },
     todosListContainer: {
         flex: 1,
