@@ -6,8 +6,9 @@ import { colors } from '../../utils/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAppDispatch } from '../../store/hooks';
 import { StyleSheet } from 'react-native';
+import { ReactElement } from 'react';
 
-export const UIDeleteButton = ({ id }: Record<'id', string>) => {
+export const UIDeleteButton = ({ id }: Record<'id', string>): ReactElement => {
     const dispatch = useAppDispatch();
     return (
         <UITouchableOpacity

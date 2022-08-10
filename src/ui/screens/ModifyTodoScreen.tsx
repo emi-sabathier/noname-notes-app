@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
@@ -14,7 +14,7 @@ const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
-export const ModifyTodoScreen = () => {
+export const ModifyTodoScreen: FunctionComponent = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute<RouteProp<RootStackParamList>>();
     const id = route.params?.item.id ?? '';

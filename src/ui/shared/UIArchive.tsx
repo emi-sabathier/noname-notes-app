@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../../utils/colors';
 import { UITouchableOpacity } from './UITouchableOpacity';
@@ -13,7 +13,7 @@ export interface ArchiveStatusSpecs {
     archiveStatus: (a: boolean) => void;
 }
 
-export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusSpecs) => {
+export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusSpecs): ReactElement => {
     const [archive, setArchive] = useState<boolean>(false);
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 

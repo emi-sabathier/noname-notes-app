@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
@@ -14,7 +14,7 @@ const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
-export const AddTodoScreen = () => {
+export const AddTodoScreen: FunctionComponent = (): ReactElement => {
     const [inputsValues, setInputValues] = useState<Todo>({
         title: '',
         content: '',
