@@ -3,8 +3,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../../utils/colors';
 import { UITouchableOpacity } from './UITouchableOpacity';
 import { StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 
 const ICON_PADDING_HORIZONTAL = 5;
@@ -14,11 +14,14 @@ export interface ArchiveStatusSpecs {
 }
 
 export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusSpecs): ReactElement => {
-    const [archive, setArchive] = useState<boolean>(false);
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
+    const route = useRoute<RouteProp<StackNavigatorParamList>>();
+    const currentArchiveStatus = route.params?.item.archive ?? false;
+    const [archive, setArchive] = useState<boolean>(currentArchiveStatus);
+    console.log('UIArchive currentArchiveStatus', currentArchiveStatus);
 
     const handleArchive = async () => {
-        setArchive(prevState => !prevState);
+        await setArchive(!currentArchiveStatus);
     };
 
     useEffect(() => {

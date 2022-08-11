@@ -4,11 +4,10 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { UITodoCard } from '../components/UITodoCard';
 import { useAppSelector } from '../../store/hooks';
 
-type Props = {};
-export const ArchivesScreen = (props: Props) => {
+export const ArchivesScreen = () => {
     const todosList = useAppSelector(state => state.todos);
     const archivesList = todosList.todos.filter(todo => todo.archive === true);
-    console.log(archivesList.length);
+
     return (
         <UIContainer>
             <View style={styles.todosListContainer}>

@@ -17,11 +17,12 @@ const INPUT_FONT_SIZE = 20;
 export const ModifyTodoScreen: FunctionComponent = () => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const route = useRoute<RouteProp<StackNavigatorParamList>>();
+    const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
+
     const id = route.params?.item.id ?? '';
     const title = route.params?.item.title ?? '';
     const content = route.params?.item.content ?? '';
     const archive = route.params?.item.archive ?? false;
-    const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
 
     const [inputsValues, setInputValues] = useState<Todo>({
         id,

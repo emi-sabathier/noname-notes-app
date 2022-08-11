@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { FirestoreDocumentData } from '../types/types';
 
-interface TodoState {
-    todos: FirebaseFirestoreTypes.DocumentData[];
+export interface TodoState {
+    todos: FirestoreDocumentData[];
 }
 
 const initialState: TodoState = {
