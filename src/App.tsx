@@ -1,16 +1,19 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import AppNavigation from './navigation/AppNavigation';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import { BottomStackNavigator } from './navigation/AppNavigation';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App = () => {
     return (
-        <Provider store={store}>
-            <NavigationContainer>
-                <AppNavigation />
-            </NavigationContainer>
-        </Provider>
+        <SafeAreaProvider>
+            <Provider store={store}>
+                <NavigationContainer>
+                    <BottomStackNavigator />
+                </NavigationContainer>
+            </Provider>
+        </SafeAreaProvider>
     );
 };
 

@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../utils/colors';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
-import { RootStackParamList } from '../../navigation/AppNavigation';
+import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Todo } from '../../models/TodoModel';
 import { updateDocument } from '../../api/cloudDatabaseService';
 import { Header } from '../../navigation/Header';
@@ -15,13 +15,14 @@ const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
 export const ModifyTodoScreen: FunctionComponent = () => {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const route = useRoute<RouteProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
+    const route = useRoute<RouteProp<StackNavigatorParamList>>();
+    const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
+
     const id = route.params?.item.id ?? '';
     const title = route.params?.item.title ?? '';
     const content = route.params?.item.content ?? '';
     const archive = route.params?.item.archive ?? false;
-    const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
 
     const [inputsValues, setInputValues] = useState<Todo>({
         id,

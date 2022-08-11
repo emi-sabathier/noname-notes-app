@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
-import { RootStackParamList } from '../../navigation/AppNavigation';
+import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import { UIContainer } from '../shared/UIContainer';
 import firestore from '@react-native-firebase/firestore';
@@ -18,16 +18,21 @@ import {
     FirestoreQuerySnapshot,
 } from '../../types/types';
 
+const BUTTON_RADIUS = 40;
+const BUTTON_WIDTH = 50;
+const BUTTON_HEIGHT = 50;
+const HEADER_HEIGHT = 50;
+const ICON_POS_BOTTOM = 0;
+const ICON_POS_RIGHT = 0;
+const INPUT_HEIGHT = 40;
+const INPUT_MARGIN = 12;
+const INPUT_FONT_SIZE = 20;
+const INPUT_PADDING = 10;
 const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
-const HEADER_HEIGHT = 50;
-const BORDER_WIDTH = 1;
-const BORDER_RADIUS = 10;
-const PADDING = 10;
-const MARGIN = 10;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const [todosList, setTodosList] = useState<any[]>([]);
     const dispatch = useAppDispatch();
 
@@ -103,7 +108,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                 </View>
                 <View style={styles.addIconPosition}>
                     <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddTodo')}>
-                        <Icon name="note-plus-outline" size={80} color={colors.grey800} />
+                        <Icon name="note-plus" size={26} color={colors.white} />
                     </UITouchableOpacity>
                 </View>
             </View>
@@ -115,22 +120,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    card: {
-        flex: 1,
-        alignSelf: 'flex-start',
-        borderColor: colors.grey300,
-        borderWidth: BORDER_WIDTH,
-        borderRadius: BORDER_RADIUS,
-        padding: PADDING,
-        margin: MARGIN,
-    },
     todosListContainer: {
         flex: 1,
     },
     addIconPosition: {
         position: 'absolute',
-        bottom: 0,
-        right: 0,
+        bottom: ICON_POS_BOTTOM,
+        right: ICON_POS_RIGHT,
     },
     headerModal: {
         marginHorizontal: MARGIN_HORIZONTAL,
@@ -140,7 +136,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     button: {
-        backgroundColor: colors.white,
+        borderRadius: BUTTON_RADIUS,
+        width: BUTTON_WIDTH,
+        height: BUTTON_HEIGHT,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#004385',
     },
     buttonClose: {
         backgroundColor: '#2196F3',
@@ -155,11 +156,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     input: {
-        height: 40,
-        margin: 12,
+        height: INPUT_HEIGHT,
+        margin: INPUT_MARGIN,
         color: colors.primaryColor,
         fontWeight: 'bold',
-        fontSize: 20,
-        padding: 10,
+        fontSize: INPUT_FONT_SIZE,
+        padding: INPUT_PADDING,
     },
 });

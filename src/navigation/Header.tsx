@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
-import { RootStackParamList } from './AppNavigation';
+import { BottomStackNavigatorParamList } from './AppNavigation';
 import { UITouchableOpacity } from '../ui/shared/UITouchableOpacity';
 import { ArchiveStatusSpecs, UIArchiveButton } from '../ui/shared/UIArchive';
 
@@ -13,7 +13,7 @@ const ICON_PADDING_HORIZONTAL = 5;
 const PADDING_HORIZONTAL = 15;
 
 export const Header = ({ archiveStatus }: ArchiveStatusSpecs) => {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<BottomStackNavigatorParamList>>();
     const handleBack = () => {
         navigation.goBack();
     };

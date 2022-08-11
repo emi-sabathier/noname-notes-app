@@ -8,7 +8,7 @@ import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import { colors } from '../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
-import { RootStackParamList } from '../../navigation/AppNavigation';
+import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 
 const BORDER_WIDTH = 1;
 const BORDER_RADIUS = 10;
@@ -21,7 +21,7 @@ type UITodoCardProps = {
 
 export const UITodoCard = ({ todo }: UITodoCardProps): JSX.Element => {
     const id = todo.id ?? '';
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
 
     return (
         <>

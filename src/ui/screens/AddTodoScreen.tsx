@@ -6,7 +6,7 @@ import { colors } from '../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { addDocument } from '../../api/cloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
-import { RootStackParamList } from '../../navigation/AppNavigation';
+import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Todo } from '../../models/TodoModel';
 import { Header } from '../../navigation/Header';
 
@@ -20,7 +20,7 @@ export const AddTodoScreen: FunctionComponent = (): ReactElement => {
         content: '',
         archive: false,
     });
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
 
     const handleInputValues = (inputName: string, inputValue: string) => {
