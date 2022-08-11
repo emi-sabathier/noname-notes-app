@@ -1,16 +1,20 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { BottomStackNavigator } from './navigation/AppNavigation';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import MainStackNavigator from './navigation/AppNavigation';
+import { useFlipper } from '@react-navigation/devtools';
+import 'react-native-gesture-handler';
 
 const App = () => {
+    const navigationRef = useNavigationContainerRef();
+    useFlipper(navigationRef);
     return (
         <SafeAreaProvider>
             <Provider store={store}>
-                <NavigationContainer>
-                    <BottomStackNavigator />
+                <NavigationContainer ref={navigationRef}>
+                    <MainStackNavigator />
                 </NavigationContainer>
             </Provider>
         </SafeAreaProvider>

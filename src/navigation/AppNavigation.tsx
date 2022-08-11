@@ -1,21 +1,21 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { HomeScreen } from '../ui/screens/HomeScreen';
 import { AddTodoScreen } from '../ui/screens/AddTodoScreen';
 import { ModifyTodoScreen } from '../ui/screens/ModifyTodoScreen';
 import { ArchivesScreen } from '../ui/screens/ArchivesScreen';
-import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { Todo } from '../models/TodoModel';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 export type StackNavigatorParamList = {
+    Drawer: DrawerStackNavigatorParamList;
     Home: undefined;
     AddTodo: undefined;
     ModifyTodo: { item: Todo };
 };
 
-export type BottomStackNavigatorParamList = {
-    MainStack: StackNavigatorParamList;
+export type DrawerStackNavigatorParamList = {
+    DrawerHome: StackNavigatorParamList;
     ArchivesStack: ArchivesStackNavigatorParamList;
 };
 
@@ -24,75 +24,42 @@ export type ArchivesStackNavigatorParamList = {
     ModifyTodo: { item: Todo };
 };
 
-const HEADER_HIDDEN: NativeStackNavigationOptions = { headerShown: false };
-const HEADER_TITLE: NativeStackNavigationOptions = { headerTitle: 'No Name App' };
+const HEADER_HIDDEN: StackNavigationOptions = { headerShown: false };
+const HEADER_TITLE: StackNavigationOptions = { headerTitle: 'No Name App' };
 
-const MainStack = createNativeStackNavigator<StackNavigatorParamList>();
-const ArchivesStack = createNativeStackNavigator<ArchivesStackNavigatorParamList>();
-const BottomStack = createMaterialBottomTabNavigator<BottomStackNavigatorParamList>();
+const MainStack = createStackNavigator<StackNavigatorParamList>();
+const ArchivesStack = createStackNavigator<ArchivesStackNavigatorParamList>();
+const DrawerStack = createDrawerNavigator<DrawerStackNavigatorParamList>();
 
 export const ArchivesStackNavigator = () => {
     return (
-        <ArchivesStack.Navigator>
-            <ArchivesStack.Screen name="Archives" component={ArchivesScreen} options={HEADER_TITLE} />
-            <ArchivesStack.Screen name="ModifyTodo" component={ModifyTodoScreen} options={HEADER_HIDDEN} />
+        <ArchivesStack.Navigator screenOptions={{ headerShown: false }}>
+            <ArchivesStack.Screen name="Archives" component={ArchivesScreen} />
+            <ArchivesStack.Screen name="ModifyTodo" component={ModifyTodoScreen} />
         </ArchivesStack.Navigator>
     );
 };
 
-export const BottomStackNavigator = () => {
+export const DrawerStackNavigator = () => {
     return (
-        <BottomStack.Navigator
-            shifting={true}
-            labeled={false}
-            activeColor="#004385"
-            inactiveColor="#E0F7FA"
-            barStyle={{ backgroundColor: '#B2EBF2' }}>
-            <BottomStack.Screen
-                name="MainStack"
-                component={MainStackNavigator}
+        <DrawerStack.Navigator>
+            <DrawerStack.Screen
+                name="DrawerHome"
+                component={HomeScreen}
                 options={{
-                    tabBarIcon: ({ focused, color }) => (
-                        <Icon
-                            name="home-variant-outline"
-                            style={{
-                                textAlign: 'center',
-                                backgroundColor: focused ? '#FFF' : 'transparent',
-                                borderRadius: 20,
-                                position: 'relative',
-                                top: -5,
-                                width: 50,
-                                height: 32,
-                            }}
-                            size={32}
-                            color={color}
-                        />
-                    ),
+                    headerTitle: 'No Name App',
+                    title: 'Home',
                 }}
             />
-            <BottomStack.Screen
+            <DrawerStack.Screen
                 name="ArchivesStack"
                 component={ArchivesStackNavigator}
                 options={{
-                    tabBarIcon: ({ focused, color }) => (
-                        <Icon
-                            name="archive-arrow-down-outline"
-                            style={{
-                                textAlign: 'center',
-                                backgroundColor: focused ? '#FFF' : 'transparent',
-                                borderRadius: 20,
-                                position: 'relative',
-                                top: -5,
-                                width: 50,
-                                height: 32,
-                            }}
-                            size={32}
-                            color={color}
-                        />
-                    ),
+                    headerTitle: 'No Name App',
+                    title: 'Archives',
                 }}
             />
-        </BottomStack.Navigator>
+        </DrawerStack.Navigator>
     );
 };
 
@@ -102,6 +69,7 @@ const MainStackNavigator = () => {
             screenOptions={{
                 headerShadowVisible: false,
             }}>
+            <MainStack.Screen name="Drawer" component={DrawerStackNavigator} options={HEADER_HIDDEN} />
             <MainStack.Screen name="Home" component={HomeScreen} options={HEADER_TITLE} />
             <MainStack.Screen name="AddTodo" component={AddTodoScreen} options={HEADER_HIDDEN} />
             <MainStack.Screen name="ModifyTodo" component={ModifyTodoScreen} options={HEADER_HIDDEN} />
