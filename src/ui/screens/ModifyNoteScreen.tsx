@@ -1,28 +1,35 @@
-import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
 import { colors } from '../../utils/colors';
-import { useNavigation } from '@react-navigation/native';
-import { addDocument } from '../../api/cloudDatabaseService';
-import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
-import { Todo } from '../../models/TodoModel';
+import { Note } from '../../models/NoteModel';
+import { updateDocument } from '../../api/cloudDatabaseService';
 import { Header } from '../../navigation/Header';
-import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
-export const AddTodoScreen: FunctionComponent = (): ReactElement => {
-    const [inputsValues, setInputValues] = useState<Todo>({
-        title: '',
-        content: '',
-        archive: false,
-    });
+export const ModifyNoteScreen: FunctionComponent = () => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
+    const route = useRoute<RouteProp<StackNavigatorParamList>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
+
+    const id = route.params?.item.id ?? '';
+    const title = route.params?.item.title ?? '';
+    const content = route.params?.item.content ?? '';
+    const archive = route.params?.item.archive ?? false;
+
+    const [inputsValues, setInputValues] = useState<Note>({
+        id,
+        title,
+        content,
+        archive,
+    });
 
     const handleInputValues = (inputName: string, inputValue: string) => {
         setInputValues({
@@ -33,7 +40,7 @@ export const AddTodoScreen: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await addDocument({ ...inputsValues, archive: archiveStatus });
+            await updateDocument({ ...inputsValues, archive: archiveStatus });
         });
         return () => {
             unsub();
@@ -60,7 +67,6 @@ export const AddTodoScreen: FunctionComponent = (): ReactElement => {
                     onChangeText={inputValue => handleInputValues('content', inputValue)}
                     value={inputsValues.content}
                 />
-                <UIScreenBottomBar />
             </UIContainer>
         </>
     );

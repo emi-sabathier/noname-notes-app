@@ -1,23 +1,23 @@
 import React from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { UITodoCard } from '../components/UITodoCard';
+import { UINoteCard } from '../components/UINoteCard';
 import { useAppSelector } from '../../store/hooks';
 
 export const ArchivesScreen = () => {
-    const todosList = useAppSelector(state => state.todos);
-    const archivesList = todosList.todos.filter(todo => todo.archive === true);
+    const notesList = useAppSelector(state => state.notes);
+    const archivesList = notesList.notes.filter(note => note.archive === true);
 
     return (
         <UIContainer>
-            <View style={styles.todosListContainer}>
+            <View style={styles.notesListContainer}>
                 {archivesList.length > 0 ? (
                     <>
                         <FlatList
                             numColumns={2}
                             data={archivesList}
-                            keyExtractor={(todo, i) => i.toString()}
-                            renderItem={({ item }) => <UITodoCard todo={item} key={item.id} />}
+                            keyExtractor={(note, i) => i.toString()}
+                            renderItem={({ item }) => <UINoteCard note={item} key={item.id} />}
                         />
                     </>
                 ) : null}
@@ -26,7 +26,7 @@ export const ArchivesScreen = () => {
     );
 };
 const styles = StyleSheet.create({
-    todosListContainer: {
+    notesListContainer: {
         flex: 1,
     },
 });

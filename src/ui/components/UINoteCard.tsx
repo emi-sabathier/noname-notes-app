@@ -1,6 +1,6 @@
 import React from 'react';
 import { UIText } from '../shared/UIText';
-import { Todo } from '../../models/TodoModel';
+import { Note } from '../../models/NoteModel';
 import { StyleSheet, View } from 'react-native';
 import { truncate } from '../../utils/truncate';
 import { UIDeleteButton } from '../shared/UIDeleteButton';
@@ -15,20 +15,20 @@ const BORDER_RADIUS = 10;
 const PADDING = 10;
 const MARGIN = 10;
 
-type UITodoCardProps = {
-    todo: Todo;
+type UINoteCardProps = {
+    note: Note;
 };
 
-export const UITodoCard = ({ todo }: UITodoCardProps): JSX.Element => {
-    const id = todo.id ?? '';
+export const UINoteCard = ({ note }: UINoteCardProps): JSX.Element => {
+    const id = note.id ?? '';
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
 
     return (
         <>
-            <UITouchableOpacity style={styles.card} onPress={() => navigation.navigate('ModifyTodo', { item: todo })}>
+            <UITouchableOpacity style={styles.card} onPress={() => navigation.navigate('ModifyNote', { item: note })}>
                 <View>
-                    <UIText type="REGULAR_BOLD">{todo.title}</UIText>
-                    <UIText type="REGULAR">{truncate(todo.content)}</UIText>
+                    <UIText type="REGULAR_BOLD">{note.title}</UIText>
+                    <UIText type="REGULAR">{truncate(note.content)}</UIText>
                 </View>
                 <UIDeleteButton id={id} />
             </UITouchableOpacity>

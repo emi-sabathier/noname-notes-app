@@ -1,1 +1,1 @@
-export const COLLECTION_NAME = 'todos';
+export const COLLECTION_NAME = 'notes';

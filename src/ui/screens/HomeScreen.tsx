@@ -8,9 +8,9 @@ import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import { UIContainer } from '../shared/UIContainer';
 import firestore from '@react-native-firebase/firestore';
-import { UITodoCard } from '../components/UITodoCard';
+import { UINoteCard } from '../components/UINoteCard';
 import { useAppDispatch } from '../../store/hooks';
-import { addTodo, deleteTodo, updateTodo } from '../../store/todosSlice';
+import { addNote, deleteNote, updateNote } from '../../store/notesSlice';
 import {
     FirestoreDocumentChange,
     FirestoreDocumentData,
@@ -34,13 +34,13 @@ const MARGIN_BOTTOM = 15;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
-    const [todosList, setTodosList] = useState<any[]>([]);
+    const [notesList, setNotesList] = useState<any[]>([]);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         (async () => {
             const unsubscribe = firestore()
-                .collection('todos')
+                .collection('notes')
                 .onSnapshot(
                     (snapshot: FirestoreQuerySnapshot<FirestoreDocumentData>): void => {
                         snapshot
@@ -49,13 +49,13 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                                 const document: FirestoreDocumentData = change.doc.data();
                                 switch (change.type) {
                                     case 'added':
-                                        dispatch(addTodo(document));
+                                        dispatch(addNote(document));
                                         break;
                                     case 'modified':
-                                        dispatch(updateTodo(document));
+                                        dispatch(updateNote(document));
                                         break;
                                     case 'removed':
-                                        dispatch(deleteTodo(document.id));
+                                        dispatch(deleteNote(document.id));
                                         break;
                                 }
                             });
@@ -71,7 +71,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         (async () => {
             const unsubscribe = firestore()
-                .collection('todos')
+                .collection('notes')
                 .onSnapshot(
                     QuerySnapshot => {
                         const documentsList = QuerySnapshot.docs.map(
@@ -79,7 +79,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                                 return document.data();
                             },
                         );
-                        setTodosList(documentsList);
+                        setNotesList(documentsList);
                     },
                     (error: Error) => {
                         throw new Error(error.message);
@@ -93,22 +93,22 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
         <UIContainer>
             <View style={styles.container}>
                 <StatusBar backgroundColor="#000" barStyle="light-content" />
-                <View style={styles.todosListContainer}>
-                    {todosList.length > 0 ? (
+                <View style={styles.notesListContainer}>
+                    {notesList.length > 0 ? (
                         <>
                             <FlatList
                                 numColumns={2}
-                                data={todosList}
-                                keyExtractor={(todo, i) => i.toString()}
+                                data={notesList}
+                                keyExtractor={(note, i) => i.toString()}
                                 renderItem={({ item }) =>
-                                    item.archive ? null : <UITodoCard todo={item} key={item.id} />
+                                    item.archive ? null : <UINoteCard note={item} key={item.id} />
                                 }
                             />
                         </>
                     ) : null}
                 </View>
                 <View style={styles.addIconPosition}>
-                    <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddTodo')}>
+                    <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddNote')}>
                         <Icon name="note-plus" size={ICON_SIZE} color={colors.white} />
                     </UITouchableOpacity>
                 </View>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    todosListContainer: {
+    notesListContainer: {
         flex: 1,
     },
     addIconPosition: {

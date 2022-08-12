@@ -1,17 +1,17 @@
 import React from 'react';
 import { HomeScreen } from '../ui/screens/HomeScreen';
-import { AddTodoScreen } from '../ui/screens/AddTodoScreen';
-import { ModifyTodoScreen } from '../ui/screens/ModifyTodoScreen';
+import { AddNoteScreen } from '../ui/screens/AddNoteScreen';
+import { ModifyNoteScreen } from '../ui/screens/ModifyNoteScreen';
 import { ArchivesScreen } from '../ui/screens/ArchivesScreen';
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
-import { Todo } from '../models/TodoModel';
+import { Note } from '../models/NoteModel';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 export type StackNavigatorParamList = {
     Drawer: DrawerStackNavigatorParamList;
     Home: undefined;
-    AddTodo: undefined;
-    ModifyTodo: { item: Todo };
+    AddNote: undefined;
+    ModifyNote: { item: Note };
 };
 
 export type DrawerStackNavigatorParamList = {
@@ -21,7 +21,7 @@ export type DrawerStackNavigatorParamList = {
 
 export type ArchivesStackNavigatorParamList = {
     Archives: undefined;
-    ModifyTodo: { item: Todo };
+    ModifyNote: { item: Note };
 };
 
 const HEADER_HIDDEN: StackNavigationOptions = { headerShown: false };
@@ -35,7 +35,7 @@ export const ArchivesStackNavigator = () => {
     return (
         <ArchivesStack.Navigator screenOptions={{ headerShown: false }}>
             <ArchivesStack.Screen name="Archives" component={ArchivesScreen} />
-            <ArchivesStack.Screen name="ModifyTodo" component={ModifyTodoScreen} />
+            <ArchivesStack.Screen name="ModifyNote" component={ModifyNoteScreen} />
         </ArchivesStack.Navigator>
     );
 };
@@ -71,8 +71,8 @@ const MainStackNavigator = () => {
             }}>
             <MainStack.Screen name="Drawer" component={DrawerStackNavigator} options={HEADER_HIDDEN} />
             <MainStack.Screen name="Home" component={HomeScreen} options={HEADER_TITLE} />
-            <MainStack.Screen name="AddTodo" component={AddTodoScreen} options={HEADER_HIDDEN} />
-            <MainStack.Screen name="ModifyTodo" component={ModifyTodoScreen} options={HEADER_HIDDEN} />
+            <MainStack.Screen name="AddNote" component={AddNoteScreen} options={HEADER_HIDDEN} />
+            <MainStack.Screen name="ModifyNote" component={ModifyNoteScreen} options={HEADER_HIDDEN} />
         </MainStack.Navigator>
     );
 };

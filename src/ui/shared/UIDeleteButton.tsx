@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { deleteDocument } from '../../api/cloudDatabaseService';
 import { UITouchableOpacity } from './UITouchableOpacity';
-import { deleteTodo } from '../../store/todosSlice';
+import { deleteNote } from '../../store/notesSlice';
 import { colors } from '../../utils/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAppDispatch } from '../../store/hooks';
@@ -17,7 +17,7 @@ export const UIDeleteButton = ({ id }: Record<'id', string>): ReactElement => {
             style={styles.iconsAlign}
             onPress={async () => {
                 await deleteDocument(id);
-                dispatch(deleteTodo(id));
+                dispatch(deleteNote(id));
             }}>
             <Icon name="trash-can-outline" size={ICON_SIZE} color={colors.grey800} />
         </UITouchableOpacity>

@@ -1,11 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
-import { Todo } from '../models/TodoModel';
+import { Note } from '../models/NoteModel';
 import { COLLECTION_NAME } from '../utils/constants';
 import { FirestoreDocumentData, FirestoreDocumentReference } from '../types/types';
 
 const db = firestore().collection(COLLECTION_NAME);
 
-export const addDocument = async (value: Todo): Promise<void> => {
+export const addDocument = async (value: Note): Promise<void> => {
     try {
         const document: FirestoreDocumentReference<FirestoreDocumentData> = db.doc();
         const id = document.id;
@@ -30,7 +30,7 @@ export const deleteDocument = async (documentId: string): Promise<void> => {
     }
 };
 
-export const updateDocument = async (value: Todo): Promise<void> => {
+export const updateDocument = async (value: Note): Promise<void> => {
     try {
         await db.doc(value.id).update(value);
     } catch (error) {

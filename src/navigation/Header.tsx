@@ -27,7 +27,7 @@ export const Header = ({ archiveStatus }: ArchiveStatusSpecs) => {
                 </UITouchableOpacity>
             </View>
             <View style={styles.rightIconsContainer}>
-                <UITouchableOpacity onPress={() => console.log('todo')} style={styles.iconsPadding}>
+                <UITouchableOpacity onPress={() => console.log('note')} style={styles.iconsPadding}>
                     <Icon name="pin-outline" size={ICON_SIZE} color={colors.black} />
                 </UITouchableOpacity>
                 <UIArchiveButton archiveStatus={archiveStatus} />
