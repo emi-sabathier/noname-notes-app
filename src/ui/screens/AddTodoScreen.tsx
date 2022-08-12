@@ -9,6 +9,7 @@ import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types'
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Todo } from '../../models/TodoModel';
 import { Header } from '../../navigation/Header';
+import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -59,6 +60,7 @@ export const AddTodoScreen: FunctionComponent = (): ReactElement => {
                     onChangeText={inputValue => handleInputValues('content', inputValue)}
                     value={inputsValues.content}
                 />
+                <UIScreenBottomBar />
             </UIContainer>
         </>
     );

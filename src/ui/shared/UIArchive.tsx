@@ -8,6 +8,7 @@ import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 
 const ICON_PADDING_HORIZONTAL = 5;
+const ICON_SIZE = 30;
 
 export interface ArchiveStatusSpecs {
     archiveStatus: (a: boolean) => void;
@@ -35,7 +36,7 @@ export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusSpecs): ReactEle
                 navigation.goBack();
             }}
             style={styles.iconsPadding}>
-            <Icon name="archive-arrow-down-outline" size={30} color={colors.black} />
+            <Icon name="archive-arrow-down-outline" size={ICON_SIZE} color={colors.black} />
         </UITouchableOpacity>
     );
 };

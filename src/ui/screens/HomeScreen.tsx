@@ -24,6 +24,7 @@ const BUTTON_HEIGHT = 50;
 const HEADER_HEIGHT = 50;
 const ICON_POS_BOTTOM = 0;
 const ICON_POS_RIGHT = 0;
+const ICON_SIZE = 26;
 const INPUT_HEIGHT = 40;
 const INPUT_MARGIN = 12;
 const INPUT_FONT_SIZE = 20;
@@ -108,7 +109,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                 </View>
                 <View style={styles.addIconPosition}>
                     <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddTodo')}>
-                        <Icon name="note-plus" size={26} color={colors.white} />
+                        <Icon name="note-plus" size={ICON_SIZE} color={colors.white} />
                     </UITouchableOpacity>
                 </View>
             </View>
