@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { addDocument } from '../../api/cloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
-import { Note } from '../../models/NoteModel';
+import { Note, NoteColor } from '../../models/NoteModel';
 import { Header } from '../../navigation/Header';
 import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
 
@@ -20,9 +20,11 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
         title: '',
         content: '',
         archive: false,
+        noteColor: 'white',
     });
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
+    const [noteColor, setNoteColor] = useState<NoteColor>('white');
 
     const handleInputValues = (inputName: string, inputValue: string) => {
         setInputValues({
@@ -33,7 +35,7 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await addDocument({ ...inputsValues, archive: archiveStatus });
+            await addDocument({ ...inputsValues, archive: archiveStatus, noteColor });
         });
         return () => {
             unsub();
@@ -42,6 +44,10 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
 
     const archiveCallback = (archiveValue: boolean): void => {
         setArchiveStatus(archiveValue);
+    };
+
+    const noteColorCallBack = (noteColorValue: NoteColor): void => {
+        setNoteColor(noteColorValue);
     };
 
     return (

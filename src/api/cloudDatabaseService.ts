@@ -19,7 +19,15 @@ export const addDocument = async (value: Note): Promise<void> => {
         }
     }
 };
-
+export const getNotesChange = () => {
+    return new Promise((resolve, reject) => {
+        db.onSnapshot(snapshot => {
+            console.log('onSnapshot Called!');
+            let updatedData = snapshot.docs.map(doc => doc.data());
+            resolve(updatedData);
+        }, reject);
+    });
+};
 export const deleteDocument = async (documentId: string): Promise<void> => {
     try {
         await db.doc(documentId).delete();

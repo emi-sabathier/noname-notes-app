@@ -4,17 +4,21 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UIText } from '../shared/UIText';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import Modal from 'react-native-modal';
+import { updateDocument } from '../../api/cloudDatabaseService';
 
 const ICON_SIZE = 30;
 
 export const UIScreenBottomBar = () => {
     const [visible, setVisible] = useState(false);
 
-    const close = () => {
+    const handleClose = () => {
         setVisible(false);
     };
     const handlePress = () => {
         setVisible(true);
+    };
+    const handleColor = async () => {
+        await updateDocument();
     };
 
     return (
@@ -26,7 +30,7 @@ export const UIScreenBottomBar = () => {
                 animationOutTiming={600}
                 useNativeDriver={true}
                 onSwipeComplete={() => {
-                    close();
+                    handleClose();
                 }}
                 style={styles.bottomModal}>
                 <View style={styles.modalContent}>
@@ -36,13 +40,25 @@ export const UIScreenBottomBar = () => {
                         </View>
                         <UITouchableOpacity
                             onPress={() => {
-                                close();
+                                handleClose();
                             }}>
                             <Icon name="window-close" size={ICON_SIZE} />
                         </UITouchableOpacity>
                     </View>
                     <View>
-                        <UIText type="LARGE">C'est kloug</UIText>
+                        <UIText type="REGULAR" style={{ marginBottom: 10 }}>
+                            Liste des couleurs
+                        </UIText>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UITouchableOpacity onPress={async () => await handleColor()}>
+                            <Icon
+                                name="checkbox-multiple-blank-circle"
+                                size={60}
+                                color="orange"
+                                style={{ marginRight: 10 }}
+                            />
+                        </UITouchableOpacity>
                     </View>
                 </View>
             </Modal>
@@ -75,7 +91,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingHorizontal: 10,
         justifyContent: 'flex-start',
-        alignItems: 'center',
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
     },

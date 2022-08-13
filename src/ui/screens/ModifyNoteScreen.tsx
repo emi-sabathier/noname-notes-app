@@ -23,12 +23,14 @@ export const ModifyNoteScreen: FunctionComponent = () => {
     const title = route.params?.item.title ?? '';
     const content = route.params?.item.content ?? '';
     const archive = route.params?.item.archive ?? false;
+    const noteColor = route.params?.item.noteColor ?? 'white';
 
     const [inputsValues, setInputValues] = useState<Note>({
         id,
         title,
         content,
         archive,
+        noteColor,
     });
 
     const handleInputValues = (inputName: string, inputValue: string) => {
