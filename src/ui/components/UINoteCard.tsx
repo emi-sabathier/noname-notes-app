@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { truncate } from '../../utils/truncate';
 import { UIDeleteButton } from '../shared/UIDeleteButton';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
-import { colors } from '../../utils/colors';
+import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
@@ -25,7 +25,9 @@ export const UINoteCard = ({ note }: UINoteCardProps): JSX.Element => {
 
     return (
         <>
-            <UITouchableOpacity style={styles.card} onPress={() => navigation.navigate('ModifyNote', { item: note })}>
+            <UITouchableOpacity
+                style={[styles.card, { backgroundColor: note.noteColor }]}
+                onPress={() => navigation.navigate('ModifyNote', { item: note })}>
                 <View>
                     <UIText type="REGULAR_BOLD">{note.title}</UIText>
                     <UIText type="REGULAR">{truncate(note.content)}</UIText>
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
     card: {
         flex: 1,
         alignSelf: 'flex-start',
-        borderColor: colors.grey300,
+        borderColor: colorScheme.grey300,
         borderWidth: BORDER_WIDTH,
         borderRadius: BORDER_RADIUS,
         padding: PADDING,

@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../../utils/colors';
+import { colorScheme } from '../../constants/colorScheme';
 import { UITouchableOpacity } from './UITouchableOpacity';
 import { StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -10,11 +10,11 @@ import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 const ICON_PADDING_HORIZONTAL = 5;
 const ICON_SIZE = 30;
 
-export interface ArchiveStatusSpecs {
+export interface ArchiveStatusProps {
     archiveStatus: (a: boolean) => void;
 }
 
-export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusSpecs): ReactElement => {
+export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusProps): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const route = useRoute<RouteProp<StackNavigatorParamList>>();
     const currentArchiveStatus = route.params?.item.archive ?? false;
@@ -36,7 +36,7 @@ export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusSpecs): ReactEle
                 navigation.goBack();
             }}
             style={styles.iconsPadding}>
-            <Icon name="archive-arrow-down-outline" size={ICON_SIZE} color={colors.black} />
+            <Icon name="archive-arrow-down-outline" size={ICON_SIZE} color={colorScheme.black} />
         </UITouchableOpacity>
     );
 };

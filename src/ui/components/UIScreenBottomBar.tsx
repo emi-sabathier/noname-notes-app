@@ -1,25 +1,52 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UIText } from '../shared/UIText';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import Modal from 'react-native-modal';
-import { updateDocument } from '../../api/cloudDatabaseService';
+import { NoteColor } from '../../models/NoteModel';
+import { colorScheme } from '../../constants/colorScheme';
+import { dictionary } from '../../constants/dictionary';
+import { colorsList } from '../../constants/noteColorsList';
 
 const ICON_SIZE = 30;
+const ICON_MARGIN = 10;
+const ICONS_CONTAINER_MARGIN_TOP = 10;
+const SELECTED_COLOR_BORDER_WIDTH = 2;
+const SELECTED_COLOR_BORDER_RADIUS = 35;
+const MODAL_CONTENT_HEIGHT = 200;
+const MODAL_CONTENT_PADDING_HORIZONTAL = 10;
+const MODAL_CONTENT_BORDER_RADIUS_TOP = 10;
 
-export const UIScreenBottomBar = () => {
+interface NoteColorProps {
+    noteColorValue: (s: NoteColor) => void;
+}
+
+export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps) => {
     const [visible, setVisible] = useState(false);
+    const [noteColor, setNoteColor] = useState<NoteColor>('white');
+    const [selectedColor, setSelectedColor] = useState<NoteColor>('white');
 
     const handleClose = () => {
         setVisible(false);
     };
+
     const handlePress = () => {
         setVisible(true);
     };
-    const handleColor = async () => {
-        await updateDocument();
+
+    const handleSelectedColor = (color: NoteColor) => {
+        setSelectedColor(color);
     };
+
+    const handleColor = async (color: NoteColor) => {
+        setNoteColor(color);
+        handleSelectedColor(color);
+    };
+
+    useEffect(() => {
+        noteColorValue(noteColor);
+    }, [noteColor]);
 
     return (
         <>
@@ -46,19 +73,26 @@ export const UIScreenBottomBar = () => {
                         </UITouchableOpacity>
                     </View>
                     <View>
-                        <UIText type="REGULAR" style={{ marginBottom: 10 }}>
-                            Liste des couleurs
+                        <UIText type="REGULAR" style={styles.colorsListMargin}>
+                            {dictionary.components.screenBottomBar.colorsList}
                         </UIText>
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UITouchableOpacity onPress={async () => await handleColor()}>
-                            <Icon
-                                name="checkbox-multiple-blank-circle"
-                                size={60}
-                                color="orange"
-                                style={{ marginRight: 10 }}
-                            />
-                        </UITouchableOpacity>
+                    <View>
+                        <FlatList
+                            numColumns={5}
+                            data={colorsList}
+                            keyExtractor={note => note.id.toString()}
+                            renderItem={({ item }) => (
+                                <UITouchableOpacity
+                                    onPress={() => handleColor(item.noteColor)}
+                                    style={[
+                                        styles.iconsMargin,
+                                        item.noteColor === selectedColor ? styles.selectedColor : null,
+                                    ]}>
+                                    <Icon name="water-circle" size={60} color={item.noteColor} />
+                                </UITouchableOpacity>
+                            )}
+                        />
                     </View>
                 </View>
             </Modal>
@@ -76,10 +110,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    selectedColor: {
+        borderWidth: SELECTED_COLOR_BORDER_WIDTH,
+        borderRadius: SELECTED_COLOR_BORDER_RADIUS,
+        borderColor: 'grey',
+        borderStyle: 'solid',
+    },
+    colorsListMargin: {
+        marginBottom: ICON_MARGIN,
+    },
+    iconsMargin: { marginRight: ICON_MARGIN },
     iconsContainer: {
         flexDirection: 'row',
         width: '100%',
-        marginTop: 10,
+        marginTop: ICONS_CONTAINER_MARGIN_TOP,
     },
     swipeIconAlign: { flex: 1, alignItems: 'center' },
     bottomModal: {
@@ -87,23 +131,11 @@ const styles = StyleSheet.create({
         margin: 0,
     },
     modalContent: {
-        height: 200,
-        backgroundColor: 'white',
-        paddingHorizontal: 10,
+        height: MODAL_CONTENT_HEIGHT,
+        backgroundColor: colorScheme.white,
+        paddingHorizontal: MODAL_CONTENT_PADDING_HORIZONTAL,
         justifyContent: 'flex-start',
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
-    },
-    viewDoubleBar: {
-        backgroundColor: 'green',
-        top: 2,
-        width: 30,
-        padding: 2,
-        borderBottomColor: 'rgba(0, 0, 0, 0.2)',
-        borderBottomWidth: 2,
-        borderTopColor: 'rgba(0, 0, 0, 0.2)',
-        borderTopWidth: 2,
-        alignSelf: 'center',
-        marginBottom: 25,
+        borderTopRightRadius: MODAL_CONTENT_BORDER_RADIUS_TOP,
+        borderTopLeftRadius: MODAL_CONTENT_BORDER_RADIUS_TOP,
     },
 });

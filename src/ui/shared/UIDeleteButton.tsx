@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { deleteDocument } from '../../api/cloudDatabaseService';
 import { UITouchableOpacity } from './UITouchableOpacity';
 import { deleteNote } from '../../store/notesSlice';
-import { colors } from '../../utils/colors';
+import { colorScheme } from '../../constants/colorScheme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAppDispatch } from '../../store/hooks';
 import { StyleSheet } from 'react-native';
@@ -19,7 +19,7 @@ export const UIDeleteButton = ({ id }: Record<'id', string>): ReactElement => {
                 await deleteDocument(id);
                 dispatch(deleteNote(id));
             }}>
-            <Icon name="trash-can-outline" size={ICON_SIZE} color={colors.grey800} />
+            <Icon name="trash-can-outline" size={ICON_SIZE} color={colorScheme.grey800} />
         </UITouchableOpacity>
     );
 };

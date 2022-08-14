@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import { Note } from '../models/NoteModel';
-import { COLLECTION_NAME } from '../utils/constants';
+import { COLLECTION_NAME } from '../constants/firestore';
 import { FirestoreDocumentData, FirestoreDocumentReference } from '../types/types';
 
 const db = firestore().collection(COLLECTION_NAME);

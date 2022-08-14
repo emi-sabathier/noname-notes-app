@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
-import { colors } from '../../utils/colors';
+import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
@@ -78,13 +78,13 @@ const styles = StyleSheet.create({
     inputTitle: {
         height: INPUT_HEIGHT,
         marginBottom: INPUT_MARGIN_BOTTOM,
-        color: colors.primaryColor,
+        color: colorScheme.primaryColor,
         fontWeight: 'bold',
         fontSize: INPUT_FONT_SIZE,
     },
     textArea: {
         flex: 1,
-        color: colors.primaryColor,
+        color: colorScheme.primaryColor,
         fontSize: INPUT_FONT_SIZE,
         textAlignVertical: 'top',
     },

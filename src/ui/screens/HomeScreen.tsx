@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../../utils/colors';
+import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
@@ -109,7 +109,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                 </View>
                 <View style={styles.addIconPosition}>
                     <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddNote')}>
-                        <Icon name="note-plus" size={ICON_SIZE} color={colors.white} />
+                        <Icon name="note-plus" size={ICON_SIZE} color={colorScheme.white} />
                     </UITouchableOpacity>
                 </View>
             </View>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#2196F3',
     },
     textStyle: {
-        color: colors.white,
+        color: colorScheme.white,
         fontWeight: 'bold',
         textAlign: 'center',
     },
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     input: {
         height: INPUT_HEIGHT,
         margin: INPUT_MARGIN,
-        color: colors.primaryColor,
+        color: colorScheme.primaryColor,
         fontWeight: 'bold',
         fontSize: INPUT_FONT_SIZE,
         padding: INPUT_PADDING,

@@ -2,7 +2,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from 'rea
 import { UIContainer } from '../shared/UIContainer';
 import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
-import { colors } from '../../utils/colors';
+import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { addDocument } from '../../api/cloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
@@ -10,6 +10,7 @@ import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
 import { Header } from '../../navigation/Header';
 import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
+import { dictionary } from '../../constants/dictionary';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -40,7 +41,7 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
         return () => {
             unsub();
         };
-    }, [navigation, inputsValues, archiveStatus]);
+    }, [navigation, inputsValues, archiveStatus, noteColor]);
 
     const archiveCallback = (archiveValue: boolean): void => {
         setArchiveStatus(archiveValue);
@@ -53,20 +54,20 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     return (
         <>
             <Header archiveStatus={archiveCallback} />
-            <UIContainer>
+            <UIContainer style={{ backgroundColor: noteColor }}>
                 <UITextInput
                     style={styles.inputTitle}
-                    placeholder="Titre"
+                    placeholder={dictionary.screens.titlePlaceholder}
                     onChangeText={inputValue => handleInputValues('title', inputValue)}
                     value={inputsValues.title}
                 />
                 <UITextInput
                     style={styles.textArea}
-                    placeholder="Ecrivez ici"
+                    placeholder={dictionary.screens.contentPlaceholder}
                     onChangeText={inputValue => handleInputValues('content', inputValue)}
                     value={inputsValues.content}
                 />
-                <UIScreenBottomBar />
+                <UIScreenBottomBar noteColorValue={noteColorCallBack} />
             </UIContainer>
         </>
     );
@@ -76,13 +77,13 @@ const styles = StyleSheet.create({
     inputTitle: {
         height: INPUT_HEIGHT,
         marginBottom: INPUT_MARGIN_BOTTOM,
-        color: colors.primaryColor,
+        color: colorScheme.primaryColor,
         fontWeight: 'bold',
         fontSize: INPUT_FONT_SIZE,
     },
     textArea: {
         flex: 1,
-        color: colors.primaryColor,
+        color: colorScheme.primaryColor,
         fontSize: INPUT_FONT_SIZE,
         textAlignVertical: 'top',
     },
