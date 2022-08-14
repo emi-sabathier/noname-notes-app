@@ -4,12 +4,17 @@
   /* Recommended React Native TSConfig base */
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
-    "lib": ["ES2016"],
+    "lib": [
+      "ES2016"
+    ],
     "target": "es6",
     "module": "commonjs",
     /* Completeness */
     "skipLibCheck": true,
-    "typeRoots": ["./node_modules/@types", "./typings"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ]
     /* Skip type checking all .d.ts files. */
   }
 }
