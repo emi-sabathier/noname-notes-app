@@ -19,7 +19,6 @@ export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusProps): ReactEle
     const route = useRoute<RouteProp<StackNavigatorParamList>>();
     const currentArchiveStatus = route.params?.item.archive ?? false;
     const [archive, setArchive] = useState<boolean>(currentArchiveStatus);
-    console.log('UIArchive currentArchiveStatus', currentArchiveStatus);
 
     const handleArchive = async () => {
         await setArchive(!currentArchiveStatus);

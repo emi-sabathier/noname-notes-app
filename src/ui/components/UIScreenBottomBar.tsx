@@ -8,6 +8,9 @@ import { NoteColor } from '../../models/NoteModel';
 import { colorScheme } from '../../constants/colorScheme';
 import { dictionary } from '../../constants/dictionary';
 import { colorsList } from '../../constants/noteColorsList';
+import { useRoute } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/core/lib/typescript/src/types';
+import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 
 const ICON_SIZE = 30;
 const ICON_MARGIN = 10;
@@ -23,8 +26,10 @@ interface NoteColorProps {
 }
 
 export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps) => {
+    const route = useRoute<RouteProp<StackNavigatorParamList>>();
+    const currentNoteColor = route.params?.item.noteColor ?? 'white';
     const [visible, setVisible] = useState(false);
-    const [noteColor, setNoteColor] = useState<NoteColor>('white');
+    const [noteColor, setNoteColor] = useState<NoteColor>(currentNoteColor);
     const [selectedColor, setSelectedColor] = useState<NoteColor>('white');
 
     const handleClose = () => {
@@ -45,6 +50,7 @@ export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps) => {
     };
 
     useEffect(() => {
+        console.log('bottom notecolor', noteColor);
         noteColorValue(noteColor);
     }, [noteColor]);
 

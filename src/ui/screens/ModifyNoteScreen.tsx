@@ -6,9 +6,10 @@ import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
-import { Note } from '../../models/NoteModel';
+import { Note, NoteColor } from '../../models/NoteModel';
 import { updateDocument } from '../../api/cloudDatabaseService';
 import { Header } from '../../navigation/Header';
+import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -18,12 +19,13 @@ export const ModifyNoteScreen: FunctionComponent = () => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const route = useRoute<RouteProp<StackNavigatorParamList>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
+    const [noteColorValue, setNoteColorValue] = useState<NoteColor>('white');
 
     const id = route.params?.item.id ?? '';
     const title = route.params?.item.title ?? '';
     const content = route.params?.item.content ?? '';
     const archive = route.params?.item.archive ?? false;
-    const noteColor = route.params?.item.noteColor ?? 'white';
+    const noteColor = route.params?.item.noteColor;
 
     const [inputsValues, setInputValues] = useState<Note>({
         id,
@@ -42,21 +44,25 @@ export const ModifyNoteScreen: FunctionComponent = () => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await updateDocument({ ...inputsValues, archive: archiveStatus });
+            await updateDocument({ ...inputsValues, archive: archiveStatus, noteColor: noteColorValue });
         });
         return () => {
             unsub();
         };
-    }, [navigation, inputsValues, archiveStatus]);
+    }, [navigation, inputsValues, archiveStatus, noteColorValue]);
 
     const archiveCallback = (archiveValue: boolean): void => {
         setArchiveStatus(archiveValue);
     };
 
+    const noteColorCallBack = (color: NoteColor): void => {
+        setNoteColorValue(color);
+    };
+
     return (
         <>
             <Header archiveStatus={archiveCallback} />
-            <UIContainer>
+            <UIContainer style={{ backgroundColor: noteColorValue }}>
                 <UITextInput
                     style={styles.inputTitle}
                     placeholder="Titre"
@@ -69,6 +75,7 @@ export const ModifyNoteScreen: FunctionComponent = () => {
                     onChangeText={inputValue => handleInputValues('content', inputValue)}
                     value={inputsValues.content}
                 />
+                <UIScreenBottomBar noteColorValue={noteColorCallBack} />
             </UIContainer>
         </>
     );
