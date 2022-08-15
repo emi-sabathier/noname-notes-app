@@ -1,0 +1,94 @@
+import * as React from 'react';
+import { ReactElement, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { UITouchableOpacity } from '../ui/shared/UITouchableOpacity';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colorScheme } from '../constants/colorScheme';
+import { UIArchiveButton } from '../ui/shared/UIArchive';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
+import { StackNavigatorParamList } from './AppNavigation';
+import { UITextInput } from '../ui/shared/UITextInput';
+import { dictionary } from '../constants/dictionary';
+import { useAppDispatch } from '../store/hooks';
+import { setQuery } from '../store/querySlice';
+
+const HEADER_HEIGHT = 50;
+const ICON_PADDING_HORIZONTAL = 5;
+const PADDING_HORIZONTAL = 15;
+const ICON_SIZE = 30;
+
+interface UIHeaderProps {
+    type: 'DEFAULT' | 'SEARCH';
+    archiveStatus?: (a: boolean) => void;
+}
+
+export const UIHeader = ({ type, archiveStatus }: UIHeaderProps): ReactElement => {
+    const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
+    const dispatch = useAppDispatch();
+    const [searchQuery, setSearchQuery] = useState('');
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+        dispatch(setQuery(query));
+    };
+
+    const handleBack = () => {
+        navigation.goBack();
+    };
+
+    switch (type) {
+        case 'DEFAULT':
+            return (
+                <View style={styles.container}>
+                    <View>
+                        <UITouchableOpacity activeOpacity={0} onPress={handleBack}>
+                            <Icon name="arrow-left" size={ICON_SIZE} color={colorScheme.black} />
+                        </UITouchableOpacity>
+                    </View>
+                    <View style={styles.rightIconsContainer}>
+                        <UITouchableOpacity onPress={() => console.log('note')} style={styles.iconsPadding}>
+                            <Icon name="pin-outline" size={ICON_SIZE} color={colorScheme.black} />
+                        </UITouchableOpacity>
+                        <UIArchiveButton archiveStatus={archiveStatus} />
+                    </View>
+                </View>
+            );
+        case 'SEARCH':
+            return (
+                <View style={styles.searchContainer}>
+                    <UITouchableOpacity activeOpacity={0} onPress={handleBack}>
+                        <Icon name="arrow-left" size={ICON_SIZE} color={colorScheme.black} />
+                    </UITouchableOpacity>
+                    <UITextInput
+                        onChangeText={inputValue => handleSearch(inputValue)}
+                        value={searchQuery}
+                        style={{ flex: 1, textAlign: 'center' }}
+                        placeholder={dictionary.screens.searchPlaceholder}
+                    />
+                </View>
+            );
+    }
+};
+
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: PADDING_HORIZONTAL,
+        flexDirection: 'row',
+        width: '100%',
+        height: HEADER_HEIGHT,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    searchContainer: {
+        paddingHorizontal: PADDING_HORIZONTAL,
+        height: HEADER_HEIGHT,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    rightIconsContainer: {
+        flexDirection: 'row',
+    },
+    iconsPadding: {
+        paddingHorizontal: ICON_PADDING_HORIZONTAL,
+    },
+});
