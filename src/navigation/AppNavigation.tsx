@@ -6,12 +6,14 @@ import { ArchivesScreen } from '../ui/screens/ArchivesScreen';
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { Note } from '../models/NoteModel';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { SearchScreen } from '../ui/screens/SearchScreen';
 
 export type StackNavigatorParamList = {
     Drawer: DrawerStackNavigatorParamList;
     Home: undefined;
     AddNote: undefined;
     ModifyNote: { item: Note };
+    Search: undefined;
 };
 
 export type DrawerStackNavigatorParamList = {
@@ -73,6 +75,7 @@ const MainStackNavigator = () => {
             <MainStack.Screen name="Home" component={HomeScreen} options={HEADER_TITLE} />
             <MainStack.Screen name="AddNote" component={AddNoteScreen} options={HEADER_HIDDEN} />
             <MainStack.Screen name="ModifyNote" component={ModifyNoteScreen} options={HEADER_HIDDEN} />
+            <MainStack.Screen name="Search" component={SearchScreen} options={HEADER_HIDDEN} />
         </MainStack.Navigator>
     );
 };

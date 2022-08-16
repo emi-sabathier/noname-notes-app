@@ -8,8 +8,8 @@ import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
 import { updateDocument } from '../../api/cloudDatabaseService';
-import { Header } from '../../navigation/Header';
 import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
+import { UIHeader } from '../../navigation/UIHeader';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -61,17 +61,15 @@ export const ModifyNoteScreen: FunctionComponent = () => {
 
     return (
         <>
-            <Header archiveStatus={archiveCallback} />
+            <UIHeader type="DEFAULT" archiveStatus={archiveCallback} />
             <UIContainer style={{ backgroundColor: noteColorValue }}>
                 <UITextInput
                     style={styles.inputTitle}
-                    placeholder="Titre"
                     onChangeText={inputValue => handleInputValues('title', inputValue)}
                     value={inputsValues.title}
                 />
                 <UITextInput
                     style={styles.textArea}
-                    placeholder="Ecrivez ici"
                     onChangeText={inputValue => handleInputValues('content', inputValue)}
                     value={inputsValues.content}
                 />

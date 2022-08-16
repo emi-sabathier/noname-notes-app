@@ -5,6 +5,8 @@ export interface TextDictionary {
 export const dictionary: TextDictionary = {
     nav: {},
     screens: {
+        searchButton: 'Rechercher',
+        searchPlaceholder: 'Rechercher dans les notes',
         titlePlaceholder: 'Titre',
         contentPlaceholder: 'Ecrivez-ici',
     },

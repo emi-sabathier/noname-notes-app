@@ -8,13 +8,12 @@ import { addDocument } from '../../api/cloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
-import { Header } from '../../navigation/Header';
 import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
 import { dictionary } from '../../constants/dictionary';
+import { UIHeader } from '../../navigation/UIHeader';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
-const INPUT_FONT_SIZE = 20;
 
 export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     const [inputsValues, setInputValues] = useState<Note>({
@@ -53,7 +52,7 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
 
     return (
         <>
-            <Header archiveStatus={archiveCallback} />
+            <UIHeader type="DEFAULT" archiveStatus={archiveCallback} />
             <UIContainer style={{ backgroundColor: noteColor }}>
                 <UITextInput
                     style={styles.inputTitle}
@@ -79,12 +78,10 @@ const styles = StyleSheet.create({
         marginBottom: INPUT_MARGIN_BOTTOM,
         color: colorScheme.primaryColor,
         fontWeight: 'bold',
-        fontSize: INPUT_FONT_SIZE,
     },
     textArea: {
         flex: 1,
         color: colorScheme.primaryColor,
-        fontSize: INPUT_FONT_SIZE,
         textAlignVertical: 'top',
     },
 });

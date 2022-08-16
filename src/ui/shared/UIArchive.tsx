@@ -11,7 +11,7 @@ const ICON_PADDING_HORIZONTAL = 5;
 const ICON_SIZE = 30;
 
 export interface ArchiveStatusProps {
-    archiveStatus: (a: boolean) => void;
+    archiveStatus?: (a: boolean) => void;
 }
 
 export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusProps): ReactElement => {
@@ -25,7 +25,9 @@ export const UIArchiveButton = ({ archiveStatus }: ArchiveStatusProps): ReactEle
     };
 
     useEffect(() => {
-        archiveStatus(archive);
+        if (archiveStatus) {
+            archiveStatus(archive);
+        }
     }, [archive]);
 
     return (

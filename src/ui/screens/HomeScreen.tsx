@@ -1,14 +1,15 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import firestore from '@react-native-firebase/firestore';
 import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import { UIContainer } from '../shared/UIContainer';
-import firestore from '@react-native-firebase/firestore';
 import { UINoteCard } from '../components/UINoteCard';
+import { UIText } from '../shared/UIText';
 import { useAppDispatch } from '../../store/hooks';
 import { addNote, deleteNote, updateNote } from '../../store/notesSlice';
 import {
@@ -16,7 +17,8 @@ import {
     FirestoreDocumentData,
     FirestoreQueryDocumentSnapshot,
     FirestoreQuerySnapshot,
-} from '../../types/types';
+} from '../../types/firestoreTypes';
+import { dictionary } from '../../constants/dictionary';
 
 const BUTTON_RADIUS = 40;
 const BUTTON_WIDTH = 50;
@@ -31,6 +33,9 @@ const INPUT_FONT_SIZE = 20;
 const INPUT_PADDING = 10;
 const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
+const SEARCH_PADDING = 10;
+const SEARCH_BORDER_RADIUS = 25;
+const SEARCH_MARGIN_BOTTOM = 10;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
@@ -91,6 +96,9 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
 
     return (
         <UIContainer>
+            <UITouchableOpacity style={styles.search} onPress={() => navigation.navigate('Search')}>
+                <UIText type="REGULAR_BOLD">{dictionary.screens.searchButton}</UIText>
+            </UITouchableOpacity>
             <View style={styles.container}>
                 <StatusBar backgroundColor="#000" barStyle="light-content" />
                 <View style={styles.notesListContainer}>
@@ -142,10 +150,7 @@ const styles = StyleSheet.create({
         height: BUTTON_HEIGHT,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#004385',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: colorScheme.lightblue900,
     },
     textStyle: {
         color: colorScheme.white,
@@ -163,5 +168,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: INPUT_FONT_SIZE,
         padding: INPUT_PADDING,
+    },
+    search: {
+        padding: SEARCH_PADDING,
+        borderRadius: SEARCH_BORDER_RADIUS,
+        backgroundColor: colorScheme.cyan100,
+        marginBottom: SEARCH_MARGIN_BOTTOM,
+        alignItems: 'center',
     },
 });

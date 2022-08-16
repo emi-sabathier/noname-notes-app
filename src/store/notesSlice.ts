@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FirestoreDocumentData } from '../types/types';
+import { FirestoreDocumentData } from '../types/firestoreTypes';
 
 export interface NoteState {
     notes: FirestoreDocumentData[];
@@ -22,6 +22,7 @@ export const notesSlice = createSlice({
         updateNote: (state: NoteState, action: PayloadAction<FirestoreDocumentData>) => {
             const updatedNotes = state.notes.filter(note => note.id !== action.payload.id);
             return {
+                ...state,
                 notes: [...updatedNotes, { ...action.payload }],
             };
         },

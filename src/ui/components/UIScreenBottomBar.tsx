@@ -50,7 +50,6 @@ export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps) => {
     };
 
     useEffect(() => {
-        console.log('bottom notecolor', noteColor);
         noteColorValue(noteColor);
     }, [noteColor]);
 

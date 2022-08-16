@@ -1,9 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
 import { Note } from '../models/NoteModel';
 import { COLLECTION_NAME } from '../constants/firestore';
-import { FirestoreDocumentData, FirestoreDocumentReference } from '../types/types';
+import { FirestoreDocumentData, FirestoreDocumentReference } from '../types/firestoreTypes';
 
-const db = firestore().collection(COLLECTION_NAME);
+const db = firestore().collection<Note>(COLLECTION_NAME);
 
 export const addDocument = async (value: Note): Promise<void> => {
     try {
