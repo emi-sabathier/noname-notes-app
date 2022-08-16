@@ -15,7 +15,6 @@ export const querySlice = createSlice({
         setQuery: (state: QueryState, action: PayloadAction<string>) => {
             return {
                 ...state,
-                // query: [...state.notes, action.payload],
                 query: action.payload,
             };
         },

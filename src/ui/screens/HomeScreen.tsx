@@ -17,7 +17,7 @@ import {
     FirestoreDocumentData,
     FirestoreQueryDocumentSnapshot,
     FirestoreQuerySnapshot,
-} from '../../types/types';
+} from '../../types/firestoreTypes';
 import { dictionary } from '../../constants/dictionary';
 
 const BUTTON_RADIUS = 40;

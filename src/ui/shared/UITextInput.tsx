@@ -12,7 +12,7 @@ type UITextInputProps = {
     style?: StyleProp<TextStyle>;
     onFocus?: (event: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     placeholder?: string;
-    onChangeText?: (text: string) => void;
+    onChangeText: (text: string) => void;
     value?: string;
 };
 
