@@ -27,3 +27,9 @@ export const UITextInput = ({ style, onFocus, placeholder, onChangeText, value }
         />
     );
 };
+
+const styles = StyleSheet.create({
+    inputFontSize: {
+        fontSize: 20,
+    },
+});
