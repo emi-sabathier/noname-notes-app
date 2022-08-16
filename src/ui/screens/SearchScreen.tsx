@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, useState } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import { UIHeader } from '../../navigation/UIHeader';
 import { useAppSelector } from '../../store/hooks';
 import { FlatList, StyleSheet } from 'react-native';
