@@ -3,10 +3,10 @@ import { HomeScreen } from '../ui/screens/HomeScreen';
 import { AddNoteScreen } from '../ui/screens/AddNoteScreen';
 import { ModifyNoteScreen } from '../ui/screens/ModifyNoteScreen';
 import { ArchivesScreen } from '../ui/screens/ArchivesScreen';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
-import { Note } from '../models/NoteModel';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SearchScreen } from '../ui/screens/SearchScreen';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Note } from '../models/NoteModel';
 
 export type StackNavigatorParamList = {
     Drawer: DrawerStackNavigatorParamList;

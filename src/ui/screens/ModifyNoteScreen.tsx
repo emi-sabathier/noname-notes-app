@@ -17,7 +17,7 @@ const INPUT_FONT_SIZE = 20;
 
 export const ModifyNoteScreen: FunctionComponent = () => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
-    const route = useRoute<RouteProp<StackNavigatorParamList>>();
+    const route = useRoute<RouteProp<StackNavigatorParamList, 'ModifyNote'>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
     const [noteColorValue, setNoteColorValue] = useState<NoteColor>('white');
 
