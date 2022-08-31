@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UIText } from '../shared/UIText';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
-import Modal from 'react-native-modal';
 import { NoteColor } from '../../models/NoteModel';
 import { colorScheme } from '../../constants/colorScheme';
 import { dictionary } from '../../constants/dictionary';
@@ -11,10 +10,10 @@ import { colorsList } from '../../constants/noteColorsList';
 import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
+import { UIModal } from '../shared/UIModal';
 
 const ICON_SIZE = 30;
 const ICON_MARGIN = 10;
-const ICONS_CONTAINER_MARGIN_TOP = 10;
 const SELECTED_COLOR_BORDER_WIDTH = 2;
 const SELECTED_COLOR_BORDER_RADIUS = 35;
 const MODAL_CONTENT_HEIGHT = 200;
@@ -22,31 +21,37 @@ const MODAL_CONTENT_PADDING_HORIZONTAL = 10;
 const MODAL_CONTENT_BORDER_RADIUS_TOP = 10;
 
 interface NoteColorProps {
-    noteColorValue: (s: NoteColor) => void;
+    noteColorValue: (v: NoteColor) => void;
 }
 
-export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps) => {
-    const route = useRoute<RouteProp<StackNavigatorParamList>>();
+export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps): ReactElement => {
+    const route = useRoute<RouteProp<StackNavigatorParamList, 'AddNote' | 'ModifyNote'>>();
     const currentNoteColor = route.params?.item.noteColor ?? 'white';
-    const [visible, setVisible] = useState(false);
+    const [colorsModalVisible, setColorsModalVisible] = useState(false);
+    const [tagsModalVisible, setTagsModalVisible] = useState(false);
     const [noteColor, setNoteColor] = useState<NoteColor>(currentNoteColor);
     const [selectedColor, setSelectedColor] = useState<NoteColor>('white');
 
-    const handleClose = () => {
-        setVisible(false);
+    const handleOpenModal = (modalType: string): void => {
+        if (modalType === 'colors') {
+            setColorsModalVisible(true);
+        } else {
+            setTagsModalVisible(true);
+        }
     };
 
-    const handlePress = () => {
-        setVisible(true);
-    };
-
-    const handleSelectedColor = (color: NoteColor) => {
+    const handleSelectedColor = (color: NoteColor): void => {
         setSelectedColor(color);
     };
 
-    const handleColor = async (color: NoteColor) => {
+    const handleColor = async (color: NoteColor): Promise<void> => {
         setNoteColor(color);
         handleSelectedColor(color);
+    };
+
+    const closeModalsCallBack = (value: boolean): void => {
+        setColorsModalVisible(value);
+        setTagsModalVisible(value);
     };
 
     useEffect(() => {
@@ -55,57 +60,48 @@ export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps) => {
 
     return (
         <>
-            <Modal
-                isVisible={visible}
-                swipeDirection="down"
-                animationInTiming={600}
-                animationOutTiming={600}
-                useNativeDriver={true}
-                onSwipeComplete={() => {
-                    handleClose();
-                }}
-                style={styles.bottomModal}>
-                <View style={styles.modalContent}>
-                    <View style={styles.iconsContainer}>
-                        <View style={styles.swipeIconAlign}>
-                            <Icon name="menu" size={ICON_SIZE} />
-                        </View>
-                        <UITouchableOpacity
-                            onPress={() => {
-                                handleClose();
-                            }}>
-                            <Icon name="window-close" size={ICON_SIZE} />
-                        </UITouchableOpacity>
-                    </View>
-                    <View>
-                        <UIText type="REGULAR" style={styles.colorsListMargin}>
-                            {dictionary.components.screenBottomBar.colorsList}
-                        </UIText>
-                    </View>
-                    <View>
-                        <FlatList
-                            numColumns={5}
-                            data={colorsList}
-                            keyExtractor={note => note.id.toString()}
-                            renderItem={({ item }) => (
-                                <UITouchableOpacity
-                                    onPress={() => handleColor(item.noteColor)}
-                                    style={[
-                                        styles.iconsMargin,
-                                        item.noteColor === selectedColor ? styles.selectedColor : null,
-                                    ]}>
-                                    <Icon name="water-circle" size={60} color={item.noteColor} />
-                                </UITouchableOpacity>
-                            )}
-                        />
-                    </View>
+            <UIModal visible={colorsModalVisible} close={closeModalsCallBack} modalHeight={200}>
+                <View>
+                    <UIText type="LARGE_BOLD" style={styles.title}>
+                        {dictionary.components.screenBottomBar.colorsModalTitle}
+                    </UIText>
                 </View>
-            </Modal>
+                <View style={styles.colorsContainer}>
+                    <FlatList
+                        numColumns={5}
+                        data={colorsList}
+                        keyExtractor={note => note.id.toString()}
+                        renderItem={({ item }) => (
+                            <UITouchableOpacity
+                                onPress={() => handleColor(item.noteColor)}
+                                style={[
+                                    styles.iconsMargin,
+                                    item.noteColor === selectedColor ? styles.selectedColor : null,
+                                ]}>
+                                <Icon name="water-circle" size={60} color={item.noteColor} />
+                            </UITouchableOpacity>
+                        )}
+                    />
+                </View>
+            </UIModal>
+
+            <UIModal visible={tagsModalVisible} close={closeModalsCallBack} modalHeight={500}>
+                <View>
+                    <UIText type="LARGE_BOLD" style={styles.title}>
+                        {dictionary.components.screenBottomBar.tagsModalTitle}
+                    </UIText>
+                </View>
+                <View>
+                    <UIText type="LARGE">libellés</UIText>
+                </View>
+            </UIModal>
             <View style={styles.container}>
-                <UITouchableOpacity onPress={() => handlePress()}>
+                <UITouchableOpacity onPress={() => handleOpenModal('colors')}>
                     <Icon name="format-color-fill" size={ICON_SIZE} />
                 </UITouchableOpacity>
-                <Icon name="dots-vertical-circle-outline" size={ICON_SIZE} />
+                <UITouchableOpacity onPress={() => handleOpenModal('tags')}>
+                    <Icon name="tag-text-outline" size={ICON_SIZE} />
+                </UITouchableOpacity>
             </View>
         </>
     );
@@ -121,16 +117,12 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         borderStyle: 'solid',
     },
-    colorsListMargin: {
+    title: {
+        textAlign: 'center',
         marginBottom: ICON_MARGIN,
     },
+    colorsContainer: { alignItems: 'center' },
     iconsMargin: { marginRight: ICON_MARGIN },
-    iconsContainer: {
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: ICONS_CONTAINER_MARGIN_TOP,
-    },
-    swipeIconAlign: { flex: 1, alignItems: 'center' },
     bottomModal: {
         justifyContent: 'flex-end',
         margin: 0,

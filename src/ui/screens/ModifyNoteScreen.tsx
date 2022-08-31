@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
@@ -15,7 +15,7 @@ const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
-export const ModifyNoteScreen: FunctionComponent = () => {
+export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const route = useRoute<RouteProp<StackNavigatorParamList, 'ModifyNote'>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);

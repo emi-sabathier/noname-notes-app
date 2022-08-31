@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { UIText } from '../shared/UIText';
 import { Note } from '../../models/NoteModel';
 import { StyleSheet, View } from 'react-native';
 import { truncate } from '../../utils/truncate';
-import { UIDeleteButton } from '../shared/UIDeleteButton';
+import { UIDeleteButton } from './UIDeleteButton';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
@@ -19,7 +19,7 @@ type UINoteCardProps = {
     note: Note;
 };
 
-export const UINoteCard = ({ note }: UINoteCardProps): JSX.Element => {
+export const UINoteCard = ({ note }: UINoteCardProps): ReactElement => {
     const id = note.id ?? '';
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
 

@@ -9,10 +9,13 @@ export const dictionary: TextDictionary = {
         searchPlaceholder: 'Rechercher dans les notes',
         titlePlaceholder: 'Titre',
         contentPlaceholder: 'Ecrivez-ici',
+        newTag: 'Nouveau libellé',
+        tagName: 'Intitulé',
     },
     components: {
         screenBottomBar: {
-            colorsList: 'Liste des couleurs',
+            colorsModalTitle: 'Liste des couleurs',
+            tagsModalTitle: 'Ajouter un tag',
         },
     },
     uiShared: {},

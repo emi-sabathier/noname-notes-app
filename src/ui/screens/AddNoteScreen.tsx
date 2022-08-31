@@ -78,10 +78,12 @@ const styles = StyleSheet.create({
         marginBottom: INPUT_MARGIN_BOTTOM,
         color: colorScheme.primaryColor,
         fontWeight: 'bold',
+        fontSize: 20,
     },
     textArea: {
         flex: 1,
         color: colorScheme.primaryColor,
         textAlignVertical: 'top',
+        fontSize: 20,
     },
 });
