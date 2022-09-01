@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
-import { updateDocument } from '../../api/cloudDatabaseService';
+import { updateDocument } from '../../api/notesCloudDatabaseService';
 import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
 import { UIHeader } from '../../navigation/UIHeader';
 

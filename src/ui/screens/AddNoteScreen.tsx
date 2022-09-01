@@ -4,7 +4,7 @@ import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
 import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
-import { addDocument } from '../../api/cloudDatabaseService';
+import { addDocument } from '../../api/notesCloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { deleteDocument } from '../../api/cloudDatabaseService';
+import { deleteDocument } from '../../api/notesCloudDatabaseService';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import { deleteNote } from '../../store/notesSlice';
 import { colorScheme } from '../../constants/colorScheme';

@@ -5,7 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import { FlatList } from 'react-native';
 import { TAGS_COLLECTION_NAME } from '../../constants/firestore';
 import { FirestoreDocumentData, FirestoreQueryDocumentSnapshot } from '../../types/firestoreTypes';
-import { UITag } from '../components/UITag';
+import { UIEditDeleteTag } from '../components/UIEditDeleteTag';
 import { UIAddTag } from '../components/UIAddTag';
 
 export const TagsScreen: FunctionComponent = (): ReactElement => {
@@ -39,10 +39,9 @@ export const TagsScreen: FunctionComponent = (): ReactElement => {
                 <UIAddTag />
                 {tagsList.length > 0 ? (
                     <FlatList
-                        numColumns={2}
                         data={tagsList}
                         keyExtractor={(tag, i) => i.toString()}
-                        renderItem={({ item, index }) => <UITag tag={item} key={index} />}
+                        renderItem={({ item, index }) => <UIEditDeleteTag tag={item} key={index} />}
                     />
                 ) : null}
             </UIContainer>

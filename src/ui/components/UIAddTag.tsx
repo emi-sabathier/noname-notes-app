@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, View } from 'react-native';
@@ -6,6 +6,7 @@ import { UITextInput } from '../shared/UITextInput';
 import { dictionary } from '../../constants/dictionary';
 import { UIText } from '../shared/UIText';
 import { colorScheme } from '../../constants/colorScheme';
+import { addDocument } from '../../api/tagsCloudDatabaseService';
 
 const ICON_SIZE = 26;
 const PLUS_ICON_SIZE = 30;
@@ -26,11 +27,22 @@ export const UIAddTag = () => {
         setTagValue(value);
     };
 
-    const addTag = () => {};
+    const addTag = async () => {
+        if (tagValue !== '') {
+            await addDocument({ name: tagValue });
+            setTagValue('');
+            setAddTagVisible(false);
+        }
+    };
 
     const toggleAddTagSpace = () => {
         setAddTagVisible(!addTagVisible);
+        setTagValue('');
     };
+
+    useEffect(() => {
+        console.log(tagValue);
+    }, [tagValue]);
 
     return (
         <View style={styles.addTagContainer}>
