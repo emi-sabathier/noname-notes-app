@@ -39,9 +39,10 @@ export const TagsScreen: FunctionComponent = (): ReactElement => {
                 <UIAddTag />
                 {tagsList.length > 0 ? (
                     <FlatList
+                        keyboardShouldPersistTaps={'handled'}
                         data={tagsList}
                         keyExtractor={(tag, i) => i.toString()}
-                        renderItem={({ item, index }) => <UIEditDeleteTag tag={item} key={index} />}
+                        renderItem={({ item }) => <UIEditDeleteTag tag={item} key={item.id} />}
                     />
                 ) : null}
             </UIContainer>

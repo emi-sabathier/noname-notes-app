@@ -10,7 +10,7 @@ export const dictionary: TextDictionary = {
         titlePlaceholder: 'Titre',
         contentPlaceholder: 'Ecrivez-ici',
         newTag: 'Nouveau libellé',
-        tagName: 'Intitulé',
+        tagName: 'Ecrire ici',
     },
     components: {
         screenBottomBar: {

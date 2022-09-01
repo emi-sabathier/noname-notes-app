@@ -27,7 +27,7 @@ export const UIAddTag = () => {
         setTagValue(value);
     };
 
-    const addTag = async () => {
+    const addTag = async (): Promise<void> => {
         if (tagValue !== '') {
             await addDocument({ name: tagValue });
             setTagValue('');
@@ -35,14 +35,10 @@ export const UIAddTag = () => {
         }
     };
 
-    const toggleAddTagSpace = () => {
+    const toggleAddTagSpace = (): void => {
         setAddTagVisible(!addTagVisible);
         setTagValue('');
     };
-
-    useEffect(() => {
-        console.log(tagValue);
-    }, [tagValue]);
 
     return (
         <View style={styles.addTagContainer}>
