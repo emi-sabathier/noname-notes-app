@@ -22,14 +22,29 @@ const PADDING_VERTICAL = 5;
 export const UIAddTag = () => {
     const [addTagVisible, setAddTagVisible] = useState(false);
     const [tagValue, setTagValue] = useState<string>('');
+    const [current, setCurrent] = useState<number>(0);
+    const tagColors = ['skyblue', 'gold', 'limegreen'];
 
     const handleInput = (value: string): void => {
         setTagValue(value);
     };
 
+    const getColor = (): string => {
+        if (current > tagColors.length - 1) {
+            setCurrent(prev => prev + 1);
+            return tagColors[current % tagColors.length];
+        } else {
+            setCurrent(prev => prev + 1);
+            return tagColors[current];
+        }
+    };
+
     const addTag = async (): Promise<void> => {
+        const color = getColor();
+        setAddTagVisible(false);
+
         if (tagValue !== '') {
-            await addDocument({ name: tagValue });
+            await addDocument({ name: tagValue, color });
             setTagValue('');
             setAddTagVisible(false);
         }
@@ -39,6 +54,8 @@ export const UIAddTag = () => {
         setAddTagVisible(!addTagVisible);
         setTagValue('');
     };
+
+    useEffect(() => {}, [current]);
 
     return (
         <View style={styles.addTagContainer}>

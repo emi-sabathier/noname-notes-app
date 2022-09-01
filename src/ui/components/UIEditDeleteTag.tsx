@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { Tag } from '../../models/TagModel';
 import { UIText } from '../shared/UIText';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colorScheme } from '../../constants/colorScheme';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
@@ -37,7 +37,7 @@ export const UIEditDeleteTag = ({ tag }: UITagProps): ReactElement => {
 
     const updateTag = async (): Promise<void> => {
         if (editedTagValue !== '') {
-            await updateDocument({ id: tag.id, name: editedTagValue });
+            await updateDocument({ ...tag, name: editedTagValue });
             setEditTagVisible(false);
         }
     };
@@ -52,7 +52,7 @@ export const UIEditDeleteTag = ({ tag }: UITagProps): ReactElement => {
         <View style={styles.editContainer}>
             {editTagVisible ? (
                 <>
-                    <UITouchableOpacity style={{ alignSelf: 'flex-end' }} onPress={deleteTag}>
+                    <UITouchableOpacity style={styles.deleteIcon} onPress={deleteTag}>
                         <Icon name="trash-can-outline" size={ICON_SIZE} color={colorScheme.grey700} />
                     </UITouchableOpacity>
 
@@ -71,7 +71,7 @@ export const UIEditDeleteTag = ({ tag }: UITagProps): ReactElement => {
                 </>
             ) : (
                 <>
-                    <Icon name="tag-text" color={colorScheme.grey700} size={ICON_SIZE} />
+                    <Icon name="tag-text" color={tag.color} size={ICON_SIZE} />
                     <UIText type="REGULAR" style={styles.margin}>
                         {tag.name}
                     </UIText>
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: CONTAINER_MARGIN_TOP,
     },
+    deleteIcon: { alignSelf: 'flex-end' },
     editButton: { alignItems: 'flex-end', flex: 1 },
     margin: {
         flex: 1,
