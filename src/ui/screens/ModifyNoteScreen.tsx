@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
-import { updateDocument } from '../../api/cloudDatabaseService';
+import { updateDocument } from '../../api/notesCloudDatabaseService';
 import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
 import { UIHeader } from '../../navigation/UIHeader';
 
@@ -15,7 +15,7 @@ const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
 const INPUT_FONT_SIZE = 20;
 
-export const ModifyNoteScreen: FunctionComponent = () => {
+export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const route = useRoute<RouteProp<StackNavigatorParamList, 'ModifyNote'>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);

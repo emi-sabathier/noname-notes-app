@@ -19,6 +19,7 @@ import {
     FirestoreQuerySnapshot,
 } from '../../types/firestoreTypes';
 import { dictionary } from '../../constants/dictionary';
+import { NOTES_COLLECTION_NAME } from '../../constants/firestore';
 
 const BUTTON_RADIUS = 40;
 const BUTTON_WIDTH = 50;
@@ -45,7 +46,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         (async () => {
             const unsubscribe = firestore()
-                .collection('notes')
+                .collection(NOTES_COLLECTION_NAME)
                 .onSnapshot(
                     (snapshot: FirestoreQuerySnapshot<FirestoreDocumentData>): void => {
                         snapshot
@@ -76,7 +77,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         (async () => {
             const unsubscribe = firestore()
-                .collection('notes')
+                .collection(NOTES_COLLECTION_NAME)
                 .onSnapshot(
                     QuerySnapshot => {
                         const documentsList = QuerySnapshot.docs.map(
@@ -114,6 +115,11 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                             />
                         </>
                     ) : null}
+                </View>
+                <View>
+                    <UITouchableOpacity onPress={() => navigation.navigate('Tags')}>
+                        <UIText type="LARGE_BOLD">Tags</UIText>
+                    </UITouchableOpacity>
                 </View>
                 <View style={styles.addIconPosition}>
                     <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddNote')}>

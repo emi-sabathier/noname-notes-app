@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { UINoteCard } from '../components/UINoteCard';
 import { useAppSelector } from '../../store/hooks';
 import { Note } from '../../models/NoteModel';
 
-export const ArchivesScreen = () => {
+export const ArchivesScreen: FunctionComponent = (): ReactElement => {
     const notesList = useAppSelector(state => state.notes);
     const archivesList = notesList.notes.filter(note => note.archive === true);
 

@@ -4,7 +4,7 @@ import { UITextInput } from '../shared/UITextInput';
 import { StyleSheet } from 'react-native';
 import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
-import { addDocument } from '../../api/cloudDatabaseService';
+import { addDocument } from '../../api/notesCloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
@@ -78,10 +78,12 @@ const styles = StyleSheet.create({
         marginBottom: INPUT_MARGIN_BOTTOM,
         color: colorScheme.primaryColor,
         fontWeight: 'bold',
+        fontSize: 20,
     },
     textArea: {
         flex: 1,
         color: colorScheme.primaryColor,
         textAlignVertical: 'top',
+        fontSize: 20,
     },
 });
