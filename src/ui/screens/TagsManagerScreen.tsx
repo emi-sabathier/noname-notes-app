@@ -1,15 +1,16 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { UIHeader } from '../../navigation/UIHeader';
 import { UIContainer } from '../shared/UIContainer';
-import firestore from '@react-native-firebase/firestore';
 import { FlatList } from 'react-native';
 import { TAGS_COLLECTION_NAME } from '../../constants/firestore';
-import { FirestoreDocumentData, FirestoreQueryDocumentSnapshot } from '../../types/firestoreTypes';
 import { UIEditDeleteTag } from '../components/UIEditDeleteTag';
 import { UIAddTag } from '../components/UIAddTag';
+import { Tag } from '../../models/TagModel';
+import { FirestoreDocumentData, FirestoreQueryDocumentSnapshot } from '../../types/firestoreTypes';
+import firestore from '@react-native-firebase/firestore';
 
-export const TagsScreen: FunctionComponent = (): ReactElement => {
-    const [tagsList, setTagsList] = useState<any[]>([]);
+export const TagsManagerScreen: FunctionComponent = (): ReactElement => {
+    const [tagsList, setTagsList] = useState<Tag[]>([]);
 
     useEffect(() => {
         (async () => {
@@ -22,7 +23,7 @@ export const TagsScreen: FunctionComponent = (): ReactElement => {
                                 return document.data();
                             },
                         );
-                        setTagsList(documentsList);
+                        setTagsList(documentsList as Tag[]);
                     },
                     (error: Error) => {
                         throw new Error(error.message);

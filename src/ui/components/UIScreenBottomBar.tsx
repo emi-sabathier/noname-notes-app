@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UIText } from '../shared/UIText';
 import { UITouchableOpacity } from '../shared/UITouchableOpacity';
-import { NoteColor } from '../../models/NoteModel';
+import { Note, NoteColor } from '../../models/NoteModel';
 import { colorScheme } from '../../constants/colorScheme';
 import { dictionary } from '../../constants/dictionary';
 import { colorsList } from '../../constants/noteColorsList';
@@ -11,20 +11,23 @@ import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { UIModal } from '../shared/UIModal';
+import { UITagSelection } from './UITagSelection';
 
 const ICON_SIZE = 30;
 const ICON_MARGIN = 10;
+const ICON_COLOR_SIZE = 50;
 const SELECTED_COLOR_BORDER_WIDTH = 2;
 const SELECTED_COLOR_BORDER_RADIUS = 35;
 const MODAL_CONTENT_HEIGHT = 200;
 const MODAL_CONTENT_PADDING_HORIZONTAL = 10;
 const MODAL_CONTENT_BORDER_RADIUS_TOP = 10;
 
-interface NoteColorProps {
+interface UIScreenBottomBarProps {
     noteColorValue: (v: NoteColor) => void;
+    note: Note;
 }
 
-export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps): ReactElement => {
+export const UIScreenBottomBar = ({ noteColorValue }: UIScreenBottomBarProps): ReactElement => {
     const route = useRoute<RouteProp<StackNavigatorParamList, 'AddNote' | 'ModifyNote'>>();
     const currentNoteColor = route.params?.item.noteColor ?? 'white';
     const [colorsModalVisible, setColorsModalVisible] = useState(false);
@@ -70,7 +73,7 @@ export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps): ReactElem
                     <FlatList
                         numColumns={5}
                         data={colorsList}
-                        keyExtractor={note => note.id.toString()}
+                        keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => (
                             <UITouchableOpacity
                                 onPress={() => handleColor(item.noteColor)}
@@ -78,7 +81,7 @@ export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps): ReactElem
                                     styles.iconsMargin,
                                     item.noteColor === selectedColor ? styles.selectedColor : null,
                                 ]}>
-                                <Icon name="water-circle" size={60} color={item.noteColor} />
+                                <Icon name="water-circle" size={ICON_COLOR_SIZE} color={item.noteColor} />
                             </UITouchableOpacity>
                         )}
                     />
@@ -91,9 +94,7 @@ export const UIScreenBottomBar = ({ noteColorValue }: NoteColorProps): ReactElem
                         {dictionary.components.screenBottomBar.tagsModalTitle}
                     </UIText>
                 </View>
-                <View>
-                    <UIText type="LARGE">libellés</UIText>
-                </View>
+                <UITagSelection />
             </UIModal>
             <View style={styles.container}>
                 <UITouchableOpacity onPress={() => handleOpenModal('colors')}>

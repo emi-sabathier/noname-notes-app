@@ -7,7 +7,7 @@ import { SearchScreen } from '../ui/screens/SearchScreen';
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Note } from '../models/NoteModel';
-import { TagsScreen } from '../ui/screens/TagsScreen';
+import { TagsManagerScreen } from '../ui/screens/TagsManagerScreen';
 
 export type StackNavigatorParamList = {
     Drawer: DrawerStackNavigatorParamList;
@@ -15,11 +15,12 @@ export type StackNavigatorParamList = {
     AddNote: undefined;
     ModifyNote: { item: Note };
     Search: undefined;
-    Tags: undefined;
+    TagsManager: undefined;
 };
 
 export type DrawerStackNavigatorParamList = {
     DrawerHome: StackNavigatorParamList;
+    TagsManager: undefined;
     ArchivesStack: ArchivesStackNavigatorParamList;
 };
 
@@ -63,6 +64,15 @@ export const DrawerStackNavigator = () => {
                     title: 'Archives',
                 }}
             />
+            <DrawerStack.Screen
+                name="TagsManager"
+                component={TagsManagerScreen}
+                options={{
+                    headerTitle: 'No Name App',
+                    title: 'Libellés',
+                    headerShown: false,
+                }}
+            />
         </DrawerStack.Navigator>
     );
 };
@@ -78,7 +88,7 @@ const MainStackNavigator = () => {
             <MainStack.Screen name="AddNote" component={AddNoteScreen} options={HEADER_HIDDEN} />
             <MainStack.Screen name="ModifyNote" component={ModifyNoteScreen} options={HEADER_HIDDEN} />
             <MainStack.Screen name="Search" component={SearchScreen} options={HEADER_HIDDEN} />
-            <MainStack.Screen name="Tags" component={TagsScreen} options={HEADER_HIDDEN} />
+            <MainStack.Screen name="TagsManager" component={TagsManagerScreen} options={HEADER_HIDDEN} />
         </MainStack.Navigator>
     );
 };

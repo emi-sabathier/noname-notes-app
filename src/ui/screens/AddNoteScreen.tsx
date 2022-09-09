@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { UIContainer } from '../shared/UIContainer';
 import { UITextInput } from '../shared/UITextInput';
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { addDocument } from '../../api/notesCloudDatabaseService';
@@ -11,6 +11,9 @@ import { Note, NoteColor } from '../../models/NoteModel';
 import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
 import { dictionary } from '../../constants/dictionary';
 import { UIHeader } from '../../navigation/UIHeader';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { UIText } from '../shared/UIText';
+import { clearTagsSelected } from '../../store/tagsSelectionSlice';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -25,6 +28,9 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
     const [noteColor, setNoteColor] = useState<NoteColor>('white');
+    const dispatch = useAppDispatch();
+    const tags = useAppSelector(state => state.tagsSelected);
+    const { tagsSelected } = tags;
 
     const handleInputValues = (inputName: string, inputValue: string) => {
         setInputValues({
@@ -35,7 +41,8 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await addDocument({ ...inputsValues, archive: archiveStatus, noteColor });
+            await addDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsSelected });
+            dispatch(clearTagsSelected());
         });
         return () => {
             unsub();
@@ -66,7 +73,13 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
                     onChangeText={inputValue => handleInputValues('content', inputValue)}
                     value={inputsValues.content}
                 />
-                <UIScreenBottomBar noteColorValue={noteColorCallBack} />
+                {tagsSelected.length > 0 ? (
+                    <FlatList
+                        data={tagsSelected}
+                        renderItem={({ item }) => <UIText type="LARGE">{item.name}</UIText>}
+                    />
+                ) : null}
+                <UIScreenBottomBar noteColorValue={noteColorCallBack} note={inputsValues} />
             </UIContainer>
         </>
     );
