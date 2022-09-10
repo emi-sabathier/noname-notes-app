@@ -149,11 +149,6 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                         </>
                     ) : null}
                 </View>
-                <View>
-                    <UITouchableOpacity onPress={() => navigation.navigate('TagsManager')}>
-                        <UIText type="LARGE_BOLD">Tags</UIText>
-                    </UITouchableOpacity>
-                </View>
                 <View style={styles.addIconPosition}>
                     <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddNote')}>
                         <Icon name="note-plus" size={ICON_SIZE} color={colorScheme.white} />
