@@ -6,10 +6,10 @@ import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
-import { UIContainer } from '../shared/UIContainer';
-import { UINoteCard } from '../components/UINoteCard';
-import { UIText } from '../shared/UIText';
+import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
+import { UIContainer } from '../sharedComponents/UIContainer';
+import { UINoteCard } from '../sharedComponents/UINoteCard';
+import { UIText } from '../sharedComponents/UIText';
 import { useAppDispatch } from '../../store/hooks';
 import { addNote, deleteNote, updateNote } from '../../store/notesSlice';
 import {
@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
     input: {
         height: INPUT_HEIGHT,
         margin: INPUT_MARGIN,
-        color: colorScheme.primaryColor,
         fontWeight: 'bold',
         fontSize: INPUT_FONT_SIZE,
         padding: INPUT_PADDING,

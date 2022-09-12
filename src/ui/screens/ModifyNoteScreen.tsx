@@ -1,16 +1,15 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
-import { UIContainer } from '../shared/UIContainer';
-import { UITextInput } from '../shared/UITextInput';
+import { UIContainer } from '../sharedComponents/UIContainer';
+import { UITextInput } from '../sharedComponents/UITextInput';
 import { FlatList, StyleSheet } from 'react-native';
-import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
 import { updateDocument } from '../../api/notesCloudDatabaseService';
-import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
+import { UIScreenBottomBar } from '../sharedComponents/UIScreenBottomBar';
 import { UIHeader } from '../../navigation/UIHeader';
-import { UIText } from '../shared/UIText';
+import { UIText } from '../sharedComponents/UIText';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -94,13 +93,11 @@ const styles = StyleSheet.create({
     inputTitle: {
         height: INPUT_HEIGHT,
         marginBottom: INPUT_MARGIN_BOTTOM,
-        color: colorScheme.primaryColor,
         fontWeight: 'bold',
         fontSize: INPUT_FONT_SIZE,
     },
     textArea: {
         flex: 1,
-        color: colorScheme.primaryColor,
         fontSize: INPUT_FONT_SIZE,
         textAlignVertical: 'top',
     },

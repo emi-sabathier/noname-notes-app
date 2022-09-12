@@ -9,5 +9,4 @@ export const colorScheme = {
     grey700: '#616161',
     grey800: '#424242',
     lightblue900: '#002F6C',
-    primaryColor: '#1B1B1B',
 };

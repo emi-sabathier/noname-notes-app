@@ -13,7 +13,7 @@ export const tagsSelectionSlice = createSlice({
     name: 'tagsSelection',
     initialState,
     reducers: {
-        toggleTagsSelected: (state: TagsSelectionState, action: PayloadAction<Tag>) => {
+        toggleSelectedTags: (state: TagsSelectionState, action: PayloadAction<Tag>) => {
             const isExists = state.tagsSelected.some(tag => tag.id === action.payload.id);
             if (isExists) {
                 return {
@@ -25,7 +25,12 @@ export const tagsSelectionSlice = createSlice({
                 };
             }
         },
-        clearTagsSelected: () => {
+        deleteOneSelectedTag: (state: TagsSelectionState, action: PayloadAction<Tag>) => {
+            return {
+                tagsSelected: state.tagsSelected.filter(tag => tag.id !== action.payload.id),
+            };
+        },
+        clearSelectedTags: () => {
             return {
                 tagsSelected: [],
             };
@@ -33,5 +38,5 @@ export const tagsSelectionSlice = createSlice({
     },
 });
 
-export const { toggleTagsSelected, clearTagsSelected } = tagsSelectionSlice.actions;
+export const { toggleSelectedTags, clearSelectedTags, deleteOneSelectedTag } = tagsSelectionSlice.actions;
 export default tagsSelectionSlice.reducer;

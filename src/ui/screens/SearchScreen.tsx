@@ -2,8 +2,8 @@ import React, { FunctionComponent, ReactElement } from 'react';
 import { UIHeader } from '../../navigation/UIHeader';
 import { useAppSelector } from '../../store/hooks';
 import { FlatList, StyleSheet } from 'react-native';
-import { UINoteCard } from '../components/UINoteCard';
-import { UIContainer } from '../shared/UIContainer';
+import { UINoteCard } from '../sharedComponents/UINoteCard';
+import { UIContainer } from '../sharedComponents/UIContainer';
 import { Note } from '../../models/NoteModel';
 
 export const SearchScreen: FunctionComponent = (): ReactElement => {

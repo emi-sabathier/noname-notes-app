@@ -2,13 +2,13 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { TAGS_COLLECTION_NAME } from '../../constants/firestore';
 import { FlatList, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { UIText } from '../shared/UIText';
+import { UIText } from '../sharedComponents/UIText';
 import { colorScheme } from '../../constants/colorScheme';
 import { CheckBox } from '@rneui/base';
 import { Tag } from '../../models/TagModel';
 import { getDataOnce } from '../../api/firestore';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { toggleTagsSelected } from '../../store/tagsSelectionSlice';
+import { toggleSelectedTags } from '../../store/tagsSelectionSlice';
 import { FirestoreDocumentData } from '../../types/firestoreTypes';
 
 const ICON_SIZE = 26;
@@ -17,9 +17,9 @@ const MARGIN_TOP = 2;
 const CONTAINER_MARGIN_TOP = 10;
 
 export const UITagSelection = (): ReactElement => {
+    const dispatch = useAppDispatch();
     const [tagsList, setTagsList] = useState<Tag[]>([]);
     const [checked, setChecked] = useState<boolean[]>([]);
-    const dispatch = useAppDispatch();
     const tags = useAppSelector(state => state.tagsSelected);
     const { tagsSelected } = tags;
 
@@ -66,7 +66,7 @@ export const UITagSelection = (): ReactElement => {
                                 checked={checked[index]}
                                 onPress={async () => {
                                     toggleCheckbox(index);
-                                    dispatch(toggleTagsSelected(item));
+                                    dispatch(toggleSelectedTags(item));
                                 }}
                                 uncheckedIcon={
                                     <Icon name="checkbox-blank-outline" color={colorScheme.grey700} size={ICON_SIZE} />

@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
-import { UIText } from '../shared/UIText';
+import { UIText } from './UIText';
 import { Note } from '../../models/NoteModel';
 import { StyleSheet, View } from 'react-native';
 import { truncate } from '../../utils/truncate';
-import { UIDeleteButton } from './UIDeleteButton';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
+import { UIDeleteButton } from '../components/UIDeleteButton';
+import { UITouchableOpacity } from './UITouchableOpacity';
 import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { UIContainer } from '../shared/UIContainer';
+import { UIContainer } from '../sharedComponents/UIContainer';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { UINoteCard } from '../components/UINoteCard';
+import { UINoteCard } from '../sharedComponents/UINoteCard';
 import { useAppSelector } from '../../store/hooks';
 import { Note } from '../../models/NoteModel';
 

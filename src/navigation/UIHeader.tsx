@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { UITouchableOpacity } from '../ui/shared/UITouchableOpacity';
+import { UITouchableOpacity } from '../ui/sharedComponents/UITouchableOpacity';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colorScheme } from '../constants/colorScheme';
 import { UIArchiveButton } from '../ui/components/UIArchive';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from './AppNavigation';
-import { UITextInput } from '../ui/shared/UITextInput';
+import { UITextInput } from '../ui/sharedComponents/UITextInput';
 import { dictionary } from '../constants/dictionary';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setQuery } from '../store/querySlice';
@@ -59,6 +59,7 @@ export const UIHeader = ({ type, archiveStatus }: UIHeaderProps): ReactElement =
                         </UITouchableOpacity>
                     </View>
                     <View style={styles.rightIconsContainer}>
+                        {/* TODO: Pin note */}
                         <UITouchableOpacity onPress={() => console.log('note')} style={styles.iconsPadding}>
                             <Icon name="pin-outline" size={ICON_SIZE} color={colorScheme.grey800} />
                         </UITouchableOpacity>

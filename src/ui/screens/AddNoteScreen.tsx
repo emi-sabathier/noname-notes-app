@@ -1,24 +1,25 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
-import { UIContainer } from '../shared/UIContainer';
-import { UITextInput } from '../shared/UITextInput';
-import { FlatList, StyleSheet } from 'react-native';
-import { colorScheme } from '../../constants/colorScheme';
+import { UIContainer } from '../sharedComponents/UIContainer';
+import { UITextInput } from '../sharedComponents/UITextInput';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { addDocument } from '../../api/notesCloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
-import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
+import { UIScreenBottomBar } from '../sharedComponents/UIScreenBottomBar';
 import { dictionary } from '../../constants/dictionary';
 import { UIHeader } from '../../navigation/UIHeader';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { UIText } from '../shared/UIText';
-import { clearTagsSelected } from '../../store/tagsSelectionSlice';
+import { clearSelectedTags } from '../../store/tagsSelectionSlice';
+import { UIChip } from '../sharedComponents/UIChip';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
+const FONT_SIZE = 20;
 
 export const AddNoteScreen: FunctionComponent = (): ReactElement => {
+    const dispatch = useAppDispatch();
     const [inputsValues, setInputValues] = useState<Note>({
         title: '',
         content: '',
@@ -28,9 +29,9 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
     const [noteColor, setNoteColor] = useState<NoteColor>('white');
-    const dispatch = useAppDispatch();
     const tags = useAppSelector(state => state.tagsSelected);
     const { tagsSelected } = tags;
+    console.log('outside"', tagsSelected);
 
     const handleInputValues = (inputName: string, inputValue: string) => {
         setInputValues({
@@ -41,8 +42,10 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
+            console.log('tags sel', tagsSelected);
+
             await addDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsSelected });
-            dispatch(clearTagsSelected());
+            dispatch(clearSelectedTags());
         });
         return () => {
             unsub();
@@ -73,12 +76,16 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
                     onChangeText={inputValue => handleInputValues('content', inputValue)}
                     value={inputsValues.content}
                 />
-                {tagsSelected.length > 0 ? (
-                    <FlatList
-                        data={tagsSelected}
-                        renderItem={({ item }) => <UIText type="LARGE">{item.name}</UIText>}
-                    />
-                ) : null}
+                <View>
+                    {tagsSelected.length > 0 ? (
+                        <FlatList
+                            columnWrapperStyle={styles.flatListWrap}
+                            numColumns={4}
+                            data={tagsSelected}
+                            renderItem={({ item }) => <UIChip tag={item} />}
+                        />
+                    ) : null}
+                </View>
                 <UIScreenBottomBar noteColorValue={noteColorCallBack} note={inputsValues} />
             </UIContainer>
         </>
@@ -89,14 +96,15 @@ const styles = StyleSheet.create({
     inputTitle: {
         height: INPUT_HEIGHT,
         marginBottom: INPUT_MARGIN_BOTTOM,
-        color: colorScheme.primaryColor,
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: FONT_SIZE,
+    },
+    flatListWrap: {
+        flexWrap: 'wrap',
     },
     textArea: {
         flex: 1,
-        color: colorScheme.primaryColor,
         textAlignVertical: 'top',
-        fontSize: 20,
+        fontSize: FONT_SIZE,
     },
 });

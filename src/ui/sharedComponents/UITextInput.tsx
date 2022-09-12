@@ -19,7 +19,7 @@ export const UITextInput = ({
     placeholder,
     onChangeText,
     value,
-    color = colorScheme.grey300,
+    color = colorScheme.grey700,
 }: UITextInputProps): ReactElement => {
     return (
         <TextInput

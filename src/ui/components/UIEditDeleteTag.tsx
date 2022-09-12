@@ -1,11 +1,11 @@
 import React, { ReactElement, useState } from 'react';
 import { Tag } from '../../models/TagModel';
-import { UIText } from '../shared/UIText';
+import { UIText } from '../sharedComponents/UIText';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colorScheme } from '../../constants/colorScheme';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
-import { UITextInput } from '../shared/UITextInput';
+import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
+import { UITextInput } from '../sharedComponents/UITextInput';
 import { dictionary } from '../../constants/dictionary';
 import { deleteDocument, updateDocument } from '../../api/tagsCloudDatabaseService';
 

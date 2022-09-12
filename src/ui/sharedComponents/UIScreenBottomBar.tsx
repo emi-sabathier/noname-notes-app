@@ -1,8 +1,8 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { UIText } from '../shared/UIText';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
+import { UIText } from './UIText';
+import { UITouchableOpacity } from './UITouchableOpacity';
 import { Note, NoteColor } from '../../models/NoteModel';
 import { colorScheme } from '../../constants/colorScheme';
 import { dictionary } from '../../constants/dictionary';
@@ -10,8 +10,8 @@ import { colorsList } from '../../constants/noteColorsList';
 import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
-import { UIModal } from '../shared/UIModal';
-import { UITagSelection } from './UITagSelection';
+import { UIModal } from './UIModal';
+import { UITagSelection } from '../components/UITagSelection';
 
 const ICON_SIZE = 30;
 const ICON_MARGIN = 10;

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
 import { UIHeader } from '../../navigation/UIHeader';
-import { UIContainer } from '../shared/UIContainer';
+import { UIContainer } from '../sharedComponents/UIContainer';
 import { FlatList } from 'react-native';
 import { TAGS_COLLECTION_NAME } from '../../constants/firestore';
 import { UIEditDeleteTag } from '../components/UIEditDeleteTag';
