@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colorScheme } from '../../constants/colorScheme';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
+import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
 import { StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';

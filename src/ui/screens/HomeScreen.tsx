@@ -6,10 +6,10 @@ import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
-import { UIContainer } from '../shared/UIContainer';
-import { UINoteCard } from '../components/UINoteCard';
-import { UIText } from '../shared/UIText';
+import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
+import { UIContainer } from '../sharedComponents/UIContainer';
+import { UINoteCard } from '../sharedComponents/UINoteCard';
+import { UIText } from '../sharedComponents/UIText';
 import { useAppDispatch } from '../../store/hooks';
 import { addNote, deleteNote, updateNote } from '../../store/notesSlice';
 import {
@@ -19,7 +19,8 @@ import {
     FirestoreQuerySnapshot,
 } from '../../types/firestoreTypes';
 import { dictionary } from '../../constants/dictionary';
-import { NOTES_COLLECTION_NAME } from '../../constants/firestore';
+import { NOTES_COLLECTION_NAME, TAGS_COLLECTION_NAME } from '../../constants/firestore';
+import { addTag, deleteTag, updateTag } from '../../store/tagsSlice';
 
 const BUTTON_RADIUS = 40;
 const BUTTON_WIDTH = 50;
@@ -43,6 +44,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
     const [notesList, setNotesList] = useState<any[]>([]);
     const dispatch = useAppDispatch();
 
+    // TODO: Make it DRY for notes and tags
     useEffect(() => {
         (async () => {
             const unsubscribe = firestore()
@@ -62,6 +64,37 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                                         break;
                                     case 'removed':
                                         dispatch(deleteNote(document.id));
+                                        break;
+                                }
+                            });
+                    },
+                    (error: Error) => {
+                        throw new Error(error.message);
+                    },
+                );
+            return () => unsubscribe;
+        })();
+    }, [dispatch]);
+
+    useEffect(() => {
+        (async () => {
+            const unsubscribe = firestore()
+                .collection(TAGS_COLLECTION_NAME)
+                .onSnapshot(
+                    (snapshot: FirestoreQuerySnapshot<FirestoreDocumentData>): void => {
+                        snapshot
+                            .docChanges()
+                            .forEach(async (change: FirestoreDocumentChange<FirestoreDocumentData>) => {
+                                const document: FirestoreDocumentData = change.doc.data();
+                                switch (change.type) {
+                                    case 'added':
+                                        dispatch(addTag(document));
+                                        break;
+                                    case 'modified':
+                                        dispatch(updateTag(document));
+                                        break;
+                                    case 'removed':
+                                        dispatch(deleteTag(document.id));
                                         break;
                                 }
                             });
@@ -116,11 +149,6 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                         </>
                     ) : null}
                 </View>
-                <View>
-                    <UITouchableOpacity onPress={() => navigation.navigate('Tags')}>
-                        <UIText type="LARGE_BOLD">Tags</UIText>
-                    </UITouchableOpacity>
-                </View>
                 <View style={styles.addIconPosition}>
                     <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddNote')}>
                         <Icon name="note-plus" size={ICON_SIZE} color={colorScheme.white} />
@@ -170,7 +198,6 @@ const styles = StyleSheet.create({
     input: {
         height: INPUT_HEIGHT,
         margin: INPUT_MARGIN,
-        color: colorScheme.primaryColor,
         fontWeight: 'bold',
         fontSize: INPUT_FONT_SIZE,
         padding: INPUT_PADDING,

@@ -1,13 +1,13 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { UIContainer } from '../shared/UIContainer';
+import { UIContainer } from '../sharedComponents/UIContainer';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { UINoteCard } from '../components/UINoteCard';
+import { UINoteCard } from '../sharedComponents/UINoteCard';
 import { useAppSelector } from '../../store/hooks';
 import { Note } from '../../models/NoteModel';
 
 export const ArchivesScreen: FunctionComponent = (): ReactElement => {
-    const notesList = useAppSelector(state => state.notes);
-    const archivesList = notesList.notes.filter(note => note.archive === true);
+    const notesSelector = useAppSelector(state => state.notes);
+    const archivesList = notesSelector.notes.filter(note => note.archive === true);
 
     return (
         <UIContainer>

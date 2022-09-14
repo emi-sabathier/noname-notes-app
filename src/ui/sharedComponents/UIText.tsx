@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { GestureResponderEvent, StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
-import NamedStyles = StyleSheet.NamedStyles;
 import { colorScheme } from '../../constants/colorScheme';
+import NamedStyles = StyleSheet.NamedStyles;
 
 type FontsType = 'SMALL' | 'REGULAR_BOLD' | 'REGULAR' | 'LARGE' | 'LARGE_BOLD';
 type UITextProps = {

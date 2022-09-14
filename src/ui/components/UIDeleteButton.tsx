@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { deleteDocument } from '../../api/notesCloudDatabaseService';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
+import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
 import { deleteNote } from '../../store/notesSlice';
 import { colorScheme } from '../../constants/colorScheme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

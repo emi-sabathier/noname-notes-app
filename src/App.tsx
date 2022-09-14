@@ -10,6 +10,7 @@ import 'react-native-gesture-handler';
 const App = () => {
     const navigationRef = useNavigationContainerRef();
     useFlipper(navigationRef);
+
     return (
         <SafeAreaProvider>
             <Provider store={store}>

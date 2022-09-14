@@ -1,3 +1,5 @@
+import { Tag } from './TagModel';
+
 export type NoteColor = 'white' | 'lightblue' | 'lemonchiffon' | 'orange' | 'lightgreen';
 
 export interface Note {
@@ -6,4 +8,5 @@ export interface Note {
     content: string;
     archive: boolean;
     noteColor: NoteColor;
+    tags?: Tag[];
 }

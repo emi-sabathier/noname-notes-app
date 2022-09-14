@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
+import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, View } from 'react-native';
-import { UITextInput } from '../shared/UITextInput';
+import { UITextInput } from '../sharedComponents/UITextInput';
 import { dictionary } from '../../constants/dictionary';
-import { UIText } from '../shared/UIText';
+import { UIText } from '../sharedComponents/UIText';
 import { colorScheme } from '../../constants/colorScheme';
 import { addDocument } from '../../api/tagsCloudDatabaseService';
 
