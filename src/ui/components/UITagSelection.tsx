@@ -20,8 +20,7 @@ export const UITagSelection = (): ReactElement => {
     const dispatch = useAppDispatch();
     const [tagsList, setTagsList] = useState<Tag[]>([]);
     const [checked, setChecked] = useState<boolean[]>([]);
-    const tags = useAppSelector(state => state.tagsSelected);
-    const { tagsSelected } = tags;
+    const { tagsSelected } = useAppSelector(state => state.tagsSelected);
 
     const toggleCheckbox = (position: number): void => {
         const updatedCheckedState = checked.map((isChecked, index) => (index === position ? !isChecked : isChecked));

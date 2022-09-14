@@ -6,8 +6,8 @@ import { useAppSelector } from '../../store/hooks';
 import { Note } from '../../models/NoteModel';
 
 export const ArchivesScreen: FunctionComponent = (): ReactElement => {
-    const notesList = useAppSelector(state => state.notes);
-    const archivesList = notesList.notes.filter(note => note.archive === true);
+    const notesSelector = useAppSelector(state => state.notes);
+    const archivesList = notesSelector.notes.filter(note => note.archive === true);
 
     return (
         <UIContainer>

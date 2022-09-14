@@ -7,11 +7,11 @@ import { UIContainer } from '../sharedComponents/UIContainer';
 import { Note } from '../../models/NoteModel';
 
 export const SearchScreen: FunctionComponent = (): ReactElement => {
-    const notesList = useAppSelector(state => state.notes);
+    const { notes } = useAppSelector(state => state.notes);
     const { query } = useAppSelector(state => state.query);
     const queryLowercase = query.toLowerCase();
 
-    const found = notesList.notes.filter(note => {
+    const found = notes.filter(note => {
         const titleLowercase = note.title.toLowerCase();
         const contentLowercase = note.content.toLowerCase();
 

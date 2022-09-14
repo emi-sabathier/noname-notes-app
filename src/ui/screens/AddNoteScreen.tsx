@@ -29,8 +29,7 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
     const [noteColor, setNoteColor] = useState<NoteColor>('white');
-    const tags = useAppSelector(state => state.tagsSelected);
-    const { tagsSelected } = tags;
+    const { tagsSelected } = useAppSelector(state => state.tagsSelected);
     const [tagsList, setTagsList] = useState(tagsSelected);
 
     const handleInputValues = (inputName: string, inputValue: string) => {
