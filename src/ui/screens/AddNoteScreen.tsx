@@ -31,26 +31,31 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     const [noteColor, setNoteColor] = useState<NoteColor>('white');
     const tags = useAppSelector(state => state.tagsSelected);
     const { tagsSelected } = tags;
-    console.log('outside"', tagsSelected);
+    const [tagsList, setTagsList] = useState(tagsSelected);
 
     const handleInputValues = (inputName: string, inputValue: string) => {
         setInputValues({
             ...inputsValues,
             [inputName]: inputValue,
         });
+        setTagsList(tagsSelected);
     };
 
     useEffect(() => {
-        const unsub = navigation.addListener('beforeRemove', async e => {
-            console.log('tags sel', tagsSelected);
+        if (tagsSelected.length > 0) {
+            setTagsList(tagsSelected);
+        }
+    }, [tagsList, tagsSelected]);
 
-            await addDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsSelected });
+    useEffect(() => {
+        const unsub = navigation.addListener('beforeRemove', async e => {
+            await addDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsList });
             dispatch(clearSelectedTags());
         });
         return () => {
             unsub();
         };
-    }, [navigation, inputsValues, archiveStatus, noteColor]);
+    }, [tagsList, tagsSelected, navigation, inputsValues, archiveStatus, noteColor]);
 
     const archiveCallback = (archiveValue: boolean): void => {
         setArchiveStatus(archiveValue);
