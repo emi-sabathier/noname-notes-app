@@ -5,30 +5,36 @@ import { FlatList, StyleSheet } from 'react-native';
 import { UINoteCard } from '../sharedComponents/UINoteCard';
 import { UIContainer } from '../sharedComponents/UIContainer';
 import { Note } from '../../models/NoteModel';
+import { Tag } from '../../models/TagModel';
 
 export const SearchScreen: FunctionComponent = (): ReactElement => {
     const { notes } = useAppSelector(state => state.notes);
     const { query } = useAppSelector(state => state.query);
     const queryLowercase = query.toLowerCase();
 
-    const found = notes.filter(note => {
-        const titleLowercase = note.title.toLowerCase();
-        const contentLowercase = note.content.toLowerCase();
+    const getResults = () => {
+        return notes.filter(note => {
+            const titleLowercase = note.title.toLowerCase();
+            const contentLowercase = note.content.toLowerCase();
+            const tagsFound = note.tags.some((tag: Tag) => tag.name.toLowerCase().includes(queryLowercase));
 
-        if (titleLowercase.includes(queryLowercase) || contentLowercase.includes(queryLowercase)) {
-            return note;
-        }
-    });
+            if (titleLowercase.includes(queryLowercase) || contentLowercase.includes(queryLowercase) || tagsFound) {
+                return note;
+            }
+        });
+    };
+
+    const results = query !== '' ? getResults() : [];
 
     return (
         <>
             <UIHeader type="SEARCH" />
             <UIContainer style={styles.notesListContainer}>
-                {found.length > 0 && query.length > 0 ? (
+                {results.length > 0 && query.length > 0 ? (
                     <>
                         <FlatList
                             numColumns={2}
-                            data={found}
+                            data={results}
                             keyExtractor={(note, i) => i.toString()}
                             renderItem={({ item }) =>
                                 item.archive ? null : <UINoteCard note={item as Note} key={item.id} />

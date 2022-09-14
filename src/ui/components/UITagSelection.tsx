@@ -29,7 +29,7 @@ export const UITagSelection = (): ReactElement => {
 
     const setCheckedState = (documentsList: FirestoreDocumentData[]): void => {
         if (tagsSelected.length > 0) {
-            const isAlreadyChecked = documentsList.map(doc => !!tagsSelected.find(tag => tag.id === doc.id));
+            const isAlreadyChecked = documentsList.map(doc => tagsSelected.some(tag => tag.id === doc.id));
             setChecked(isAlreadyChecked);
         } else {
             setChecked(new Array(documentsList.length).fill(false));

@@ -24,8 +24,7 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
 
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
     const [noteColorValue, setNoteColorValue] = useState<NoteColor>('white');
-    const tagsSelector = useAppSelector(state => state.tagsSelected);
-    const { tagsSelected } = tagsSelector;
+    const { tagsSelected } = useAppSelector(state => state.tagsSelected);
     const [tagsList, setTagsList] = useState(tagsSelected);
 
     const id = route.params?.item.id ?? '';
