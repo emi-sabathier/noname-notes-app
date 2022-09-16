@@ -24,15 +24,17 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
 
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
     const [noteColorValue, setNoteColorValue] = useState<NoteColor>('white');
+    const { notes } = useAppSelector(state => state.notes);
     const { tagsSelected } = useAppSelector(state => state.tagsSelected);
     const [tagsList, setTagsList] = useState(tagsSelected);
 
     const id = route.params?.item.id ?? '';
-    const title = route.params?.item.title ?? '';
-    const content = route.params?.item.content ?? '';
-    const archive = route.params?.item.archive ?? false;
-    const tags = route.params?.item.tags ?? [];
-    const noteColor = route.params?.item.noteColor;
+    const currentNote = notes.find((note: Note) => note.id === id);
+    const title = currentNote?.title ?? '';
+    const content = currentNote?.content ?? '';
+    const archive = currentNote?.archive ?? false;
+    const tags = currentNote?.tags ?? [];
+    const noteColor = currentNote?.noteColor ?? 'white';
 
     const [inputsValues, setInputValues] = useState<Note>({
         id,
@@ -58,7 +60,7 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
     }, [tagsList, tagsSelected]);
 
     useEffect(() => {
-        dispatch(addAlreadySelectedTags(tags));
+        dispatch(addAlreadySelectedTags(tags)); // redux tagsSelected [...]
     }, []);
 
     useEffect(() => {
@@ -99,11 +101,11 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
                     value={inputsValues.content}
                 />
                 <View>
-                    {tagsSelected.length > 0 ? (
+                    {tagsList.length > 0 ? (
                         <FlatList
                             columnWrapperStyle={styles.flatListWrap}
                             numColumns={4}
-                            data={tagsSelected}
+                            data={tagsList}
                             renderItem={({ item }) => <UIChip tag={item} />}
                         />
                     ) : null}

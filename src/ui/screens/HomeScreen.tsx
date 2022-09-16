@@ -21,6 +21,8 @@ import {
 import { dictionary } from '../../constants/dictionary';
 import { NOTES_COLLECTION_NAME, TAGS_COLLECTION_NAME } from '../../constants/firestore';
 import { addTag, deleteTag, updateTag } from '../../store/tagsSlice';
+import { Note } from '../../models/NoteModel';
+import { Tag } from '../../models/TagModel';
 
 const BUTTON_RADIUS = 40;
 const BUTTON_WIDTH = 50;
@@ -54,13 +56,13 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                         snapshot
                             .docChanges()
                             .forEach(async (change: FirestoreDocumentChange<FirestoreDocumentData>) => {
-                                const document: FirestoreDocumentData = change.doc.data();
+                                const document = change.doc.data();
                                 switch (change.type) {
                                     case 'added':
-                                        dispatch(addNote(document));
+                                        dispatch(addNote(document as Note));
                                         break;
                                     case 'modified':
-                                        dispatch(updateNote(document));
+                                        dispatch(updateNote(document as Note));
                                         break;
                                     case 'removed':
                                         dispatch(deleteNote(document.id));
@@ -88,10 +90,10 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                                 const document: FirestoreDocumentData = change.doc.data();
                                 switch (change.type) {
                                     case 'added':
-                                        dispatch(addTag(document));
+                                        dispatch(addTag(document as Tag));
                                         break;
                                     case 'modified':
-                                        dispatch(updateTag(document));
+                                        dispatch(updateTag(document as Tag));
                                         break;
                                     case 'removed':
                                         dispatch(deleteTag(document.id));
