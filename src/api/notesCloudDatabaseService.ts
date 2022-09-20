@@ -5,7 +5,7 @@ import { FirestoreDocumentData, FirestoreDocumentReference } from '../types/fire
 
 const db = firestore().collection<Note>(NOTES_COLLECTION_NAME);
 
-export const addDocument = async (value: Note): Promise<void> => {
+export const addNoteDocument = async (value: Note): Promise<void> => {
     try {
         const document: FirestoreDocumentReference<FirestoreDocumentData> = db.doc();
         const id = document.id;
@@ -20,7 +20,7 @@ export const addDocument = async (value: Note): Promise<void> => {
     }
 };
 
-export const deleteDocument = async (documentId: string): Promise<void> => {
+export const deleteNoteDocument = async (documentId: string): Promise<void> => {
     try {
         await db.doc(documentId).delete();
     } catch (error) {
@@ -30,7 +30,7 @@ export const deleteDocument = async (documentId: string): Promise<void> => {
     }
 };
 
-export const updateDocument = async (value: Note): Promise<void> => {
+export const updateNoteDocument = async (value: Note): Promise<void> => {
     try {
         await db.doc(value.id).update(value);
     } catch (error) {

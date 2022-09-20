@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { deleteDocument } from '../../api/notesCloudDatabaseService';
+import { deleteNoteDocument } from '../../api/notesCloudDatabaseService';
 import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
 import { deleteNote } from '../../store/notesSlice';
 import { colorScheme } from '../../constants/colorScheme';
@@ -16,7 +16,7 @@ export const UIDeleteButton = ({ id }: Record<'id', string>): ReactElement => {
         <UITouchableOpacity
             style={styles.iconsAlign}
             onPress={async () => {
-                await deleteDocument(id);
+                await deleteNoteDocument(id);
                 dispatch(deleteNote(id));
             }}>
             <Icon name="trash-can-outline" size={ICON_SIZE} color={colorScheme.grey700} />

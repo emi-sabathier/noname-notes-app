@@ -3,7 +3,7 @@ import { UIContainer } from '../sharedComponents/UIContainer';
 import { UITextInput } from '../sharedComponents/UITextInput';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { addDocument } from '../../api/notesCloudDatabaseService';
+import { addNoteDocument } from '../../api/notesCloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
@@ -48,7 +48,7 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await addDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsList });
+            await addNoteDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsList });
             dispatch(clearSelectedTags());
         });
         return () => {
