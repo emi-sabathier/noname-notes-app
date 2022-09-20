@@ -60,7 +60,7 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
     }, [tagsList, tagsSelected]);
 
     useEffect(() => {
-        dispatch(addAlreadySelectedTags(tags)); // redux tagsSelected [...]
+        dispatch(addAlreadySelectedTags(tags));
     }, []);
 
     useEffect(() => {

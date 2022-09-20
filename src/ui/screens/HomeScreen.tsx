@@ -43,7 +43,7 @@ const SEARCH_MARGIN_BOTTOM = 10;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
-    const [notesList, setNotesList] = useState<any[]>([]);
+    const [notesList, setNotesList] = useState<Note[]>([]);
     const dispatch = useAppDispatch();
 
     // TODO: Make it DRY for notes and tags
@@ -120,7 +120,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                                 return document.data();
                             },
                         );
-                        setNotesList(documentsList);
+                        setNotesList(documentsList as Note[]);
                     },
                     (error: Error) => {
                         throw new Error(error.message);

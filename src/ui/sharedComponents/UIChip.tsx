@@ -26,9 +26,9 @@ export const UIChip = ({ tag }: UIChipProps) => {
         (async () => {
             const data = await getDataOnce<Tag>(TAGS_COLLECTION_NAME);
             const documentsList = data.docs.map(item => item.data());
-            documentsList.map(item => {
-                if (item.id && tag.id === item.id) {
-                    setTagName(item.name);
+            documentsList.map(documentTag => {
+                if (documentTag.id && tag.id === documentTag.id) {
+                    setTagName(documentTag.name);
                 }
             });
             return () => data;
