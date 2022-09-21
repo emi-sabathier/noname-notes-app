@@ -7,7 +7,9 @@ import { colorScheme } from '../../constants/colorScheme';
 import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
 import { UITextInput } from '../sharedComponents/UITextInput';
 import { dictionary } from '../../constants/dictionary';
-import { deleteDocument, updateDocument } from '../../api/tagsCloudDatabaseService';
+import { deleteTagDocument, updateTagDocument } from '../../api/tagsCloudDatabaseService';
+import { updateNoteDocument } from '../../api/notesCloudDatabaseService';
+import { useAppSelector } from '../../store/hooks';
 
 const ICON_SIZE = 26;
 const INPUT_HEIGHT = 25;
@@ -26,6 +28,7 @@ interface UITagProps {
 export const UIEditDeleteTag = ({ tag }: UITagProps): ReactElement => {
     const [editTagVisible, setEditTagVisible] = useState(false);
     const [editedTagValue, setEditedTagValue] = useState<string>(tag.name);
+    const { notes } = useAppSelector(state => state.notes);
 
     const toggleEdit = () => {
         setEditTagVisible(!editTagVisible);
@@ -37,14 +40,30 @@ export const UIEditDeleteTag = ({ tag }: UITagProps): ReactElement => {
 
     const updateTag = async (): Promise<void> => {
         if (editedTagValue !== '') {
-            await updateDocument({ ...tag, name: editedTagValue });
+            const id = tag.id ?? '';
+            await updateTagDocument({ ...tag, name: editedTagValue });
+            notes.map(async note => {
+                const tags = note.tags ?? [];
+                const isTagExists = tags.some(t => t.id === id);
+                if (isTagExists) {
+                    const tagsFiltered: Tag[] = tags.filter(t => t.id !== id);
+                    await updateNoteDocument({
+                        ...note,
+                        tags: [...tagsFiltered, { ...tag, name: editedTagValue }],
+                    });
+                }
+            });
             setEditTagVisible(false);
         }
     };
 
     const deleteTag = async () => {
         const id = tag.id ?? '';
-        await deleteDocument(id);
+        await deleteTagDocument(id);
+        notes.map(async note => {
+            const tagsFiltered = note.tags?.filter(t => t.id !== id);
+            await updateNoteDocument({ ...note, tags: tagsFiltered });
+        });
         setEditTagVisible(false);
     };
 

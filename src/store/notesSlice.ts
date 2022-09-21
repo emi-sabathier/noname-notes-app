@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FirestoreDocumentData } from '../types/firestoreTypes';
+import { Note } from '../models/NoteModel';
 
 export interface NoteState {
-    notes: FirestoreDocumentData[];
+    notes: Note[];
 }
 
 const initialState: NoteState = {
@@ -13,13 +13,13 @@ export const notesSlice = createSlice({
     name: 'notes',
     initialState,
     reducers: {
-        addNote: (state: NoteState, action: PayloadAction<FirestoreDocumentData>) => {
+        addNote: (state: NoteState, action: PayloadAction<Note>) => {
             return {
                 ...state,
                 notes: [...state.notes, action.payload],
             };
         },
-        updateNote: (state: NoteState, action: PayloadAction<FirestoreDocumentData>) => {
+        updateNote: (state: NoteState, action: PayloadAction<Note>) => {
             const updatedNotes = state.notes.filter(note => note.id !== action.payload.id);
             return {
                 ...state,

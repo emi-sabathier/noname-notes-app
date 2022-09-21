@@ -24,8 +24,3 @@ Si ce n'est pas le cas, `yarn start` avant `yarn run android`
 * Ou via Android studio:
 `yarn start` puis, cliquez sur l'icône de run
 ![Run android]( https://i.ibb.co/yXKvL5r/android.jpg)
- 
-
-### `yarn test`
-
-Pour lancer les tests. Tests encore en cours de réalisation

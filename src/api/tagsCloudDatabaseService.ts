@@ -5,7 +5,7 @@ import { Tag } from '../models/TagModel';
 
 const db = firestore().collection<Tag>(TAGS_COLLECTION_NAME);
 
-export const addDocument = async (value: Tag): Promise<void> => {
+export const addTagDocument = async (value: Tag): Promise<void> => {
     try {
         const document: FirestoreDocumentReference<FirestoreDocumentData> = db.doc();
         const id = document.id;
@@ -20,7 +20,7 @@ export const addDocument = async (value: Tag): Promise<void> => {
     }
 };
 
-export const deleteDocument = async (documentId: string): Promise<void> => {
+export const deleteTagDocument = async (documentId: string): Promise<void> => {
     try {
         await db.doc(documentId).delete();
     } catch (error) {
@@ -30,7 +30,7 @@ export const deleteDocument = async (documentId: string): Promise<void> => {
     }
 };
 
-export const updateDocument = async (value: Tag): Promise<void> => {
+export const updateTagDocument = async (value: Tag): Promise<void> => {
     try {
         await db.doc(value.id).update(value);
     } catch (error) {

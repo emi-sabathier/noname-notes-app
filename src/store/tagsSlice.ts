@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FirestoreDocumentData } from '../types/firestoreTypes';
+import { Tag } from '../models/TagModel';
 
 export interface TagState {
-    tags: FirestoreDocumentData[];
+    tags: Tag[];
 }
 
 const initialState: TagState = {
@@ -13,13 +13,13 @@ export const tagsSlice = createSlice({
     name: 'tags',
     initialState,
     reducers: {
-        addTag: (state: TagState, action: PayloadAction<FirestoreDocumentData>) => {
+        addTag: (state: TagState, action: PayloadAction<Tag>) => {
             return {
                 ...state,
                 tags: [...state.tags, action.payload],
             };
         },
-        updateTag: (state: TagState, action: PayloadAction<FirestoreDocumentData>) => {
+        updateTag: (state: TagState, action: PayloadAction<Tag>) => {
             const updatedTags = state.tags.filter(tag => tag.id !== action.payload.id);
             return {
                 ...state,

@@ -23,6 +23,7 @@ export const UITextInput = ({
 }: UITextInputProps): ReactElement => {
     return (
         <TextInput
+            multiline={true}
             style={style}
             maxLength={length}
             placeholder={placeholder}

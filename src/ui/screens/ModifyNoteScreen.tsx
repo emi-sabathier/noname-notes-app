@@ -6,7 +6,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
-import { updateDocument } from '../../api/notesCloudDatabaseService';
+import { updateNoteDocument } from '../../api/notesCloudDatabaseService';
 import { UIScreenBottomBar } from '../sharedComponents/UIScreenBottomBar';
 import { UIHeader } from '../../navigation/UIHeader';
 import { addAlreadySelectedTags, clearSelectedTags } from '../../store/tagsSelectionSlice';
@@ -24,15 +24,17 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
 
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
     const [noteColorValue, setNoteColorValue] = useState<NoteColor>('white');
+    const { notes } = useAppSelector(state => state.notes);
     const { tagsSelected } = useAppSelector(state => state.tagsSelected);
     const [tagsList, setTagsList] = useState(tagsSelected);
 
     const id = route.params?.item.id ?? '';
-    const title = route.params?.item.title ?? '';
-    const content = route.params?.item.content ?? '';
-    const archive = route.params?.item.archive ?? false;
-    const tags = route.params?.item.tags ?? [];
-    const noteColor = route.params?.item.noteColor;
+    const currentNote = notes.find((note: Note) => note.id === id);
+    const title = currentNote?.title ?? '';
+    const content = currentNote?.content ?? '';
+    const archive = currentNote?.archive ?? false;
+    const tags = currentNote?.tags ?? [];
+    const noteColor = currentNote?.noteColor ?? 'white';
 
     const [inputsValues, setInputValues] = useState<Note>({
         id,
@@ -54,8 +56,10 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         if (tagsSelected.length > 0) {
             setTagsList(tagsSelected);
+        } else {
+            setTagsList([]);
         }
-    }, [tagsList, tagsSelected]);
+    }, [tagsSelected]);
 
     useEffect(() => {
         dispatch(addAlreadySelectedTags(tags));
@@ -63,13 +67,15 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await updateDocument({
-                ...inputsValues,
-                archive: archiveStatus,
-                noteColor: noteColorValue,
-                tags: tagsList,
-            });
-            dispatch(clearSelectedTags());
+            if (inputsValues.title !== '' || inputsValues.content !== '') {
+                await updateNoteDocument({
+                    ...inputsValues,
+                    archive: archiveStatus,
+                    noteColor: noteColorValue,
+                    tags: tagsList,
+                });
+                dispatch(clearSelectedTags());
+            }
         });
         return () => {
             unsub();
@@ -99,11 +105,11 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
                     value={inputsValues.content}
                 />
                 <View>
-                    {tagsSelected.length > 0 ? (
+                    {tagsList.length > 0 ? (
                         <FlatList
                             columnWrapperStyle={styles.flatListWrap}
                             numColumns={4}
-                            data={tagsSelected}
+                            data={tagsList}
                             renderItem={({ item }) => <UIChip tag={item} />}
                         />
                     ) : null}
@@ -128,5 +134,6 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: INPUT_FONT_SIZE,
         textAlignVertical: 'top',
+        flexWrap: 'wrap',
     },
 });

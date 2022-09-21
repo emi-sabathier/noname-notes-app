@@ -21,6 +21,8 @@ import {
 import { dictionary } from '../../constants/dictionary';
 import { NOTES_COLLECTION_NAME, TAGS_COLLECTION_NAME } from '../../constants/firestore';
 import { addTag, deleteTag, updateTag } from '../../store/tagsSlice';
+import { Note } from '../../models/NoteModel';
+import { Tag } from '../../models/TagModel';
 
 const BUTTON_RADIUS = 40;
 const BUTTON_WIDTH = 50;
@@ -37,11 +39,11 @@ const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
 const SEARCH_PADDING = 10;
 const SEARCH_BORDER_RADIUS = 25;
-const SEARCH_MARGIN_BOTTOM = 10;
+const SEARCH_MARGIN_BOTTOM = 30;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
-    const [notesList, setNotesList] = useState<any[]>([]);
+    const [notesList, setNotesList] = useState<Note[]>([]);
     const dispatch = useAppDispatch();
 
     // TODO: Make it DRY for notes and tags
@@ -54,13 +56,13 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                         snapshot
                             .docChanges()
                             .forEach(async (change: FirestoreDocumentChange<FirestoreDocumentData>) => {
-                                const document: FirestoreDocumentData = change.doc.data();
+                                const document = change.doc.data();
                                 switch (change.type) {
                                     case 'added':
-                                        dispatch(addNote(document));
+                                        dispatch(addNote(document as Note));
                                         break;
                                     case 'modified':
-                                        dispatch(updateNote(document));
+                                        dispatch(updateNote(document as Note));
                                         break;
                                     case 'removed':
                                         dispatch(deleteNote(document.id));
@@ -88,10 +90,10 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                                 const document: FirestoreDocumentData = change.doc.data();
                                 switch (change.type) {
                                     case 'added':
-                                        dispatch(addTag(document));
+                                        dispatch(addTag(document as Tag));
                                         break;
                                     case 'modified':
-                                        dispatch(updateTag(document));
+                                        dispatch(updateTag(document as Tag));
                                         break;
                                     case 'removed':
                                         dispatch(deleteTag(document.id));
@@ -118,7 +120,7 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                                 return document.data();
                             },
                         );
-                        setNotesList(documentsList);
+                        setNotesList(documentsList as Note[]);
                     },
                     (error: Error) => {
                         throw new Error(error.message);
@@ -128,10 +130,17 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
         })();
     }, []);
 
+    const notArchivedNotesList = (list: Note[]) => {
+        return list.filter((note: Note) => !note.archive);
+    };
+
     return (
         <UIContainer>
             <UITouchableOpacity style={styles.search} onPress={() => navigation.navigate('Search')}>
-                <UIText type="REGULAR_BOLD">{dictionary.screens.searchButton}</UIText>
+                <Icon name="magnify" size={ICON_SIZE} />
+                <UIText type="REGULAR" style={styles.searchPlaceholder}>
+                    {dictionary.screens.searchButton}
+                </UIText>
             </UITouchableOpacity>
             <View style={styles.container}>
                 <StatusBar backgroundColor="#000" barStyle="light-content" />
@@ -140,19 +149,14 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                         <>
                             <FlatList
                                 numColumns={2}
-                                data={notesList}
+                                data={notArchivedNotesList(notesList)}
                                 keyExtractor={(note, i) => i.toString()}
-                                renderItem={({ item }) =>
-                                    item.archive ? null : <UINoteCard note={item} key={item.id} />
+                                renderItem={({ item, index }) =>
+                                    item.archive ? null : <UINoteCard note={item} index={index} key={item.id} />
                                 }
                             />
                         </>
                     ) : null}
-                </View>
-                <View>
-                    <UITouchableOpacity onPress={() => navigation.navigate('TagsManager')}>
-                        <UIText type="LARGE_BOLD">Tags</UIText>
-                    </UITouchableOpacity>
                 </View>
                 <View style={styles.addIconPosition}>
                     <UITouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddNote')}>
@@ -207,10 +211,14 @@ const styles = StyleSheet.create({
         fontSize: INPUT_FONT_SIZE,
         padding: INPUT_PADDING,
     },
+    searchPlaceholder: { textAlign: 'center', flex: 1 },
     search: {
+        flexDirection: 'row',
         padding: SEARCH_PADDING,
+        borderColor: colorScheme.grey700,
+        borderWidth: 1,
+        borderStyle: 'dashed',
         borderRadius: SEARCH_BORDER_RADIUS,
-        backgroundColor: colorScheme.cyan100,
         marginBottom: SEARCH_MARGIN_BOTTOM,
         alignItems: 'center',
     },
