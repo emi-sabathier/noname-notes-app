@@ -9,6 +9,10 @@ export const ArchivesScreen: FunctionComponent = (): ReactElement => {
     const notesSelector = useAppSelector(state => state.notes);
     const archivesList = notesSelector.notes.filter(note => note.archive === true);
 
+    const archivedNotesList = (list: Note[]) => {
+        return list.filter((note: Note) => note.archive);
+    };
+
     return (
         <UIContainer>
             <View style={styles.notesListContainer}>
@@ -16,9 +20,9 @@ export const ArchivesScreen: FunctionComponent = (): ReactElement => {
                     <>
                         <FlatList
                             numColumns={2}
-                            data={archivesList}
+                            data={archivedNotesList(archivesList)}
                             keyExtractor={(note, i) => i.toString()}
-                            renderItem={({ item }) => <UINoteCard note={item as Note} key={item.id} />}
+                            renderItem={({ item, index }) => <UINoteCard note={item} index={index} key={item.id} />}
                         />
                     </>
                 ) : null}

@@ -4,7 +4,6 @@ import { useAppSelector } from '../../store/hooks';
 import { FlatList, StyleSheet } from 'react-native';
 import { UINoteCard } from '../sharedComponents/UINoteCard';
 import { UIContainer } from '../sharedComponents/UIContainer';
-import { Note } from '../../models/NoteModel';
 import { Tag } from '../../models/TagModel';
 
 export const SearchScreen: FunctionComponent = (): ReactElement => {
@@ -16,7 +15,8 @@ export const SearchScreen: FunctionComponent = (): ReactElement => {
         return notes.filter(note => {
             const titleLowercase = note.title.toLowerCase();
             const contentLowercase = note.content.toLowerCase();
-            const tagsFound = note.tags.some((tag: Tag) => tag.name.toLowerCase().includes(queryLowercase));
+            const tags = note.tags ?? [];
+            const tagsFound = tags.some((tag: Tag) => tag.name.toLowerCase().includes(queryLowercase));
 
             if (titleLowercase.includes(queryLowercase) || contentLowercase.includes(queryLowercase) || tagsFound) {
                 return note;
@@ -36,8 +36,8 @@ export const SearchScreen: FunctionComponent = (): ReactElement => {
                             numColumns={2}
                             data={results}
                             keyExtractor={(note, i) => i.toString()}
-                            renderItem={({ item }) =>
-                                item.archive ? null : <UINoteCard note={item as Note} key={item.id} />
+                            renderItem={({ item, index }) =>
+                                item.archive ? null : <UINoteCard note={item} index={index} key={item.id} />
                             }
                         />
                     </>

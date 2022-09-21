@@ -56,8 +56,10 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         if (tagsSelected.length > 0) {
             setTagsList(tagsSelected);
+        } else {
+            setTagsList([]);
         }
-    }, [tagsList, tagsSelected]);
+    }, [tagsSelected]);
 
     useEffect(() => {
         dispatch(addAlreadySelectedTags(tags));
@@ -65,13 +67,15 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await updateNoteDocument({
-                ...inputsValues,
-                archive: archiveStatus,
-                noteColor: noteColorValue,
-                tags: tagsList,
-            });
-            dispatch(clearSelectedTags());
+            if (inputsValues.title !== '' || inputsValues.content !== '') {
+                await updateNoteDocument({
+                    ...inputsValues,
+                    archive: archiveStatus,
+                    noteColor: noteColorValue,
+                    tags: tagsList,
+                });
+                dispatch(clearSelectedTags());
+            }
         });
         return () => {
             unsub();
@@ -130,5 +134,6 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: INPUT_FONT_SIZE,
         textAlignVertical: 'top',
+        flexWrap: 'wrap',
     },
 });

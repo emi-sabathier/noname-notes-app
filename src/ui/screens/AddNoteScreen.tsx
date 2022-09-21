@@ -48,8 +48,10 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await addNoteDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsList });
-            dispatch(clearSelectedTags());
+            if (inputsValues.title !== '' || inputsValues.content !== '') {
+                await addNoteDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsList });
+                dispatch(clearSelectedTags());
+            }
         });
         return () => {
             unsub();
