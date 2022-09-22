@@ -35,7 +35,7 @@ export const TagsManagerScreen: FunctionComponent = (): ReactElement => {
 
     return (
         <>
-            <UIHeader type="DEFAULT" />
+            <UIHeader type="TAGS" />
             <UIContainer>
                 <UIAddTag />
                 {tagsList.length > 0 ? (

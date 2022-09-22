@@ -39,7 +39,7 @@ const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
 const SEARCH_PADDING = 10;
 const SEARCH_BORDER_RADIUS = 25;
-const SEARCH_MARGIN_BOTTOM = 30;
+const SEARCH_MARGIN_BOTTOM = 20;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
