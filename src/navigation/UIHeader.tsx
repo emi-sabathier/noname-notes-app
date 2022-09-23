@@ -18,8 +18,10 @@ const ICON_PADDING_HORIZONTAL = 5;
 const PADDING_HORIZONTAL = 15;
 const ICON_SIZE = 30;
 
+type UIHeaderTypes = 'DEFAULT' | 'TAGS' | 'SEARCH';
+
 interface UIHeaderProps {
-    type: 'DEFAULT' | 'SEARCH';
+    type: UIHeaderTypes;
     archiveStatus?: (v: boolean) => void;
 }
 
@@ -59,11 +61,17 @@ export const UIHeader = ({ type, archiveStatus }: UIHeaderProps): ReactElement =
                         </UITouchableOpacity>
                     </View>
                     <View style={styles.rightIconsContainer}>
-                        {/* TODO: Pin note */}
-                        <UITouchableOpacity onPress={() => console.log('note')} style={styles.iconsPadding}>
-                            <Icon name="pin-outline" size={ICON_SIZE} color={colorScheme.grey800} />
-                        </UITouchableOpacity>
                         <UIArchiveButton archiveStatus={archiveStatus} />
+                    </View>
+                </View>
+            );
+        case 'TAGS':
+            return (
+                <View style={styles.container}>
+                    <View>
+                        <UITouchableOpacity activeOpacity={0} onPress={handleBack}>
+                            <Icon name="arrow-left" size={ICON_SIZE} color={colorScheme.grey800} />
+                        </UITouchableOpacity>
                     </View>
                 </View>
             );

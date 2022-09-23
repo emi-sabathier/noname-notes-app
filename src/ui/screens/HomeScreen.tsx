@@ -1,7 +1,6 @@
-import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import firestore from '@react-native-firebase/firestore';
 import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
@@ -10,19 +9,10 @@ import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
 import { UIContainer } from '../sharedComponents/UIContainer';
 import { UINoteCard } from '../sharedComponents/UINoteCard';
 import { UIText } from '../sharedComponents/UIText';
-import { useAppDispatch } from '../../store/hooks';
-import { addNote, deleteNote, updateNote } from '../../store/notesSlice';
-import {
-    FirestoreDocumentChange,
-    FirestoreDocumentData,
-    FirestoreQueryDocumentSnapshot,
-    FirestoreQuerySnapshot,
-} from '../../types/firestoreTypes';
 import { dictionary } from '../../constants/dictionary';
-import { NOTES_COLLECTION_NAME, TAGS_COLLECTION_NAME } from '../../constants/firestore';
-import { addTag, deleteTag, updateTag } from '../../store/tagsSlice';
+import { NOTES_COLLECTION_NAME } from '../../constants/firestore';
 import { Note } from '../../models/NoteModel';
-import { Tag } from '../../models/TagModel';
+import { useDocumentsListener } from '../../api/hooks/useDocumentsListener';
 
 const BUTTON_RADIUS = 40;
 const BUTTON_WIDTH = 50;
@@ -39,96 +29,11 @@ const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
 const SEARCH_PADDING = 10;
 const SEARCH_BORDER_RADIUS = 25;
-const SEARCH_MARGIN_BOTTOM = 30;
+const SEARCH_MARGIN_BOTTOM = 20;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
-    const [notesList, setNotesList] = useState<Note[]>([]);
-    const dispatch = useAppDispatch();
-
-    // TODO: Make it DRY for notes and tags
-    useEffect(() => {
-        (async () => {
-            const unsubscribe = firestore()
-                .collection(NOTES_COLLECTION_NAME)
-                .onSnapshot(
-                    (snapshot: FirestoreQuerySnapshot<FirestoreDocumentData>): void => {
-                        snapshot
-                            .docChanges()
-                            .forEach(async (change: FirestoreDocumentChange<FirestoreDocumentData>) => {
-                                const document = change.doc.data();
-                                switch (change.type) {
-                                    case 'added':
-                                        dispatch(addNote(document as Note));
-                                        break;
-                                    case 'modified':
-                                        dispatch(updateNote(document as Note));
-                                        break;
-                                    case 'removed':
-                                        dispatch(deleteNote(document.id));
-                                        break;
-                                }
-                            });
-                    },
-                    (error: Error) => {
-                        throw new Error(error.message);
-                    },
-                );
-            return () => unsubscribe;
-        })();
-    }, [dispatch]);
-
-    useEffect(() => {
-        (async () => {
-            const unsubscribe = firestore()
-                .collection(TAGS_COLLECTION_NAME)
-                .onSnapshot(
-                    (snapshot: FirestoreQuerySnapshot<FirestoreDocumentData>): void => {
-                        snapshot
-                            .docChanges()
-                            .forEach(async (change: FirestoreDocumentChange<FirestoreDocumentData>) => {
-                                const document: FirestoreDocumentData = change.doc.data();
-                                switch (change.type) {
-                                    case 'added':
-                                        dispatch(addTag(document as Tag));
-                                        break;
-                                    case 'modified':
-                                        dispatch(updateTag(document as Tag));
-                                        break;
-                                    case 'removed':
-                                        dispatch(deleteTag(document.id));
-                                        break;
-                                }
-                            });
-                    },
-                    (error: Error) => {
-                        throw new Error(error.message);
-                    },
-                );
-            return () => unsubscribe;
-        })();
-    }, [dispatch]);
-
-    useEffect(() => {
-        (async () => {
-            const unsubscribe = firestore()
-                .collection(NOTES_COLLECTION_NAME)
-                .onSnapshot(
-                    QuerySnapshot => {
-                        const documentsList = QuerySnapshot.docs.map(
-                            (document: FirestoreQueryDocumentSnapshot<FirestoreDocumentData>) => {
-                                return document.data();
-                            },
-                        );
-                        setNotesList(documentsList as Note[]);
-                    },
-                    (error: Error) => {
-                        throw new Error(error.message);
-                    },
-                );
-            return () => unsubscribe;
-        })();
-    }, []);
+    const notesList = useDocumentsListener<Note>(NOTES_COLLECTION_NAME);
 
     const notArchivedNotesList = (list: Note[]) => {
         return list.filter((note: Note) => !note.archive);

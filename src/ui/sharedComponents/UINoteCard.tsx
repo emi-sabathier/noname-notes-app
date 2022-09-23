@@ -13,7 +13,6 @@ import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 const BORDER_WIDTH = 1;
 const BORDER_RADIUS = 10;
 const PADDING = 10;
-const MARGIN_VERTICAL = 5;
 const MARGIN_LEFT = 10;
 
 type UINoteCardProps = {
@@ -49,10 +48,11 @@ export const UINoteCard = ({ note, index }: UINoteCardProps): ReactElement => {
 const styles = StyleSheet.create({
     card: {
         flex: 1,
+        alignSelf: 'flex-start',
         borderColor: colorScheme.grey300,
         borderWidth: BORDER_WIDTH,
         borderRadius: BORDER_RADIUS,
         padding: PADDING,
-        marginVertical: MARGIN_VERTICAL,
+        marginTop: 10,
     },
 });

@@ -36,9 +36,7 @@ export const SearchScreen: FunctionComponent = (): ReactElement => {
                             numColumns={2}
                             data={results}
                             keyExtractor={(note, i) => i.toString()}
-                            renderItem={({ item, index }) =>
-                                item.archive ? null : <UINoteCard note={item} index={index} key={item.id} />
-                            }
+                            renderItem={({ item, index }) => <UINoteCard note={item} index={index} key={item.id} />}
                         />
                     </>
                 ) : null}
