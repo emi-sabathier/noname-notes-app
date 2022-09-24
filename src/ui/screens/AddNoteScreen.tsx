@@ -1,21 +1,25 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
-import { UIContainer } from '../shared/UIContainer';
-import { UITextInput } from '../shared/UITextInput';
-import { StyleSheet } from 'react-native';
-import { colorScheme } from '../../constants/colorScheme';
+import { UIContainer } from '../sharedComponents/UIContainer';
+import { UITextInput } from '../sharedComponents/UITextInput';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { addDocument } from '../../api/cloudDatabaseService';
+import { addNoteDocument } from '../../api/notesCloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
-import { UIScreenBottomBar } from '../components/UIScreenBottomBar';
+import { UIScreenBottomBar } from '../sharedComponents/UIScreenBottomBar';
 import { dictionary } from '../../constants/dictionary';
 import { UIHeader } from '../../navigation/UIHeader';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { clearSelectedTags } from '../../store/tagsSelectionSlice';
+import { UIChip } from '../sharedComponents/UIChip';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
+const FONT_SIZE = 20;
 
 export const AddNoteScreen: FunctionComponent = (): ReactElement => {
+    const dispatch = useAppDispatch();
     const [inputsValues, setInputValues] = useState<Note>({
         title: '',
         content: '',
@@ -25,22 +29,34 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
     const [archiveStatus, setArchiveStatus] = useState<boolean>(false);
     const [noteColor, setNoteColor] = useState<NoteColor>('white');
+    const { tagsSelected } = useAppSelector(state => state.tagsSelected);
+    const [tagsList, setTagsList] = useState(tagsSelected);
 
     const handleInputValues = (inputName: string, inputValue: string) => {
         setInputValues({
             ...inputsValues,
             [inputName]: inputValue,
         });
+        setTagsList(tagsSelected);
     };
 
     useEffect(() => {
+        if (tagsSelected.length > 0) {
+            setTagsList(tagsSelected);
+        }
+    }, [tagsList, tagsSelected]);
+
+    useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
-            await addDocument({ ...inputsValues, archive: archiveStatus, noteColor });
+            if (inputsValues.title !== '' || inputsValues.content !== '') {
+                await addNoteDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsList });
+                dispatch(clearSelectedTags());
+            }
         });
         return () => {
             unsub();
         };
-    }, [navigation, inputsValues, archiveStatus, noteColor]);
+    }, [tagsList, tagsSelected, navigation, inputsValues, archiveStatus, noteColor]);
 
     const archiveCallback = (archiveValue: boolean): void => {
         setArchiveStatus(archiveValue);
@@ -66,7 +82,17 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
                     onChangeText={inputValue => handleInputValues('content', inputValue)}
                     value={inputsValues.content}
                 />
-                <UIScreenBottomBar noteColorValue={noteColorCallBack} />
+                <View>
+                    {tagsSelected.length > 0 ? (
+                        <FlatList
+                            columnWrapperStyle={styles.flatListWrap}
+                            numColumns={4}
+                            data={tagsSelected}
+                            renderItem={({ item }) => <UIChip tag={item} />}
+                        />
+                    ) : null}
+                </View>
+                <UIScreenBottomBar noteColorValue={noteColorCallBack} note={inputsValues} />
             </UIContainer>
         </>
     );
@@ -76,12 +102,15 @@ const styles = StyleSheet.create({
     inputTitle: {
         height: INPUT_HEIGHT,
         marginBottom: INPUT_MARGIN_BOTTOM,
-        color: colorScheme.primaryColor,
         fontWeight: 'bold',
+        fontSize: FONT_SIZE,
+    },
+    flatListWrap: {
+        flexWrap: 'wrap',
     },
     textArea: {
         flex: 1,
-        color: colorScheme.primaryColor,
         textAlignVertical: 'top',
+        fontSize: FONT_SIZE,
     },
 });

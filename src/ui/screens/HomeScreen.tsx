@@ -1,24 +1,18 @@
-import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import firestore from '@react-native-firebase/firestore';
 import { colorScheme } from '../../constants/colorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
-import { UITouchableOpacity } from '../shared/UITouchableOpacity';
-import { UIContainer } from '../shared/UIContainer';
-import { UINoteCard } from '../components/UINoteCard';
-import { UIText } from '../shared/UIText';
-import { useAppDispatch } from '../../store/hooks';
-import { addNote, deleteNote, updateNote } from '../../store/notesSlice';
-import {
-    FirestoreDocumentChange,
-    FirestoreDocumentData,
-    FirestoreQueryDocumentSnapshot,
-    FirestoreQuerySnapshot,
-} from '../../types/firestoreTypes';
+import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
+import { UIContainer } from '../sharedComponents/UIContainer';
+import { UINoteCard } from '../sharedComponents/UINoteCard';
+import { UIText } from '../sharedComponents/UIText';
 import { dictionary } from '../../constants/dictionary';
+import { NOTES_COLLECTION_NAME } from '../../constants/firestore';
+import { Note } from '../../models/NoteModel';
+import { useDocumentsListener } from '../../api/hooks/useDocumentsListener';
 
 const BUTTON_RADIUS = 40;
 const BUTTON_WIDTH = 50;
@@ -35,69 +29,23 @@ const MARGIN_HORIZONTAL = 20;
 const MARGIN_BOTTOM = 15;
 const SEARCH_PADDING = 10;
 const SEARCH_BORDER_RADIUS = 25;
-const SEARCH_MARGIN_BOTTOM = 10;
+const SEARCH_MARGIN_BOTTOM = 20;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
-    const [notesList, setNotesList] = useState<any[]>([]);
-    const dispatch = useAppDispatch();
+    const notesList = useDocumentsListener<Note>(NOTES_COLLECTION_NAME);
 
-    useEffect(() => {
-        (async () => {
-            const unsubscribe = firestore()
-                .collection('notes')
-                .onSnapshot(
-                    (snapshot: FirestoreQuerySnapshot<FirestoreDocumentData>): void => {
-                        snapshot
-                            .docChanges()
-                            .forEach(async (change: FirestoreDocumentChange<FirestoreDocumentData>) => {
-                                const document: FirestoreDocumentData = change.doc.data();
-                                switch (change.type) {
-                                    case 'added':
-                                        dispatch(addNote(document));
-                                        break;
-                                    case 'modified':
-                                        dispatch(updateNote(document));
-                                        break;
-                                    case 'removed':
-                                        dispatch(deleteNote(document.id));
-                                        break;
-                                }
-                            });
-                    },
-                    (error: Error) => {
-                        throw new Error(error.message);
-                    },
-                );
-            return () => unsubscribe;
-        })();
-    }, [dispatch]);
-
-    useEffect(() => {
-        (async () => {
-            const unsubscribe = firestore()
-                .collection('notes')
-                .onSnapshot(
-                    QuerySnapshot => {
-                        const documentsList = QuerySnapshot.docs.map(
-                            (document: FirestoreQueryDocumentSnapshot<FirestoreDocumentData>) => {
-                                return document.data();
-                            },
-                        );
-                        setNotesList(documentsList);
-                    },
-                    (error: Error) => {
-                        throw new Error(error.message);
-                    },
-                );
-            return () => unsubscribe;
-        })();
-    }, []);
+    const notArchivedNotesList = (list: Note[]) => {
+        return list.filter((note: Note) => !note.archive);
+    };
 
     return (
         <UIContainer>
             <UITouchableOpacity style={styles.search} onPress={() => navigation.navigate('Search')}>
-                <UIText type="REGULAR_BOLD">{dictionary.screens.searchButton}</UIText>
+                <Icon name="magnify" size={ICON_SIZE} />
+                <UIText type="REGULAR" style={styles.searchPlaceholder}>
+                    {dictionary.screens.searchButton}
+                </UIText>
             </UITouchableOpacity>
             <View style={styles.container}>
                 <StatusBar backgroundColor="#000" barStyle="light-content" />
@@ -106,10 +54,10 @@ export const HomeScreen: FunctionComponent = (): ReactElement => {
                         <>
                             <FlatList
                                 numColumns={2}
-                                data={notesList}
+                                data={notArchivedNotesList(notesList)}
                                 keyExtractor={(note, i) => i.toString()}
-                                renderItem={({ item }) =>
-                                    item.archive ? null : <UINoteCard note={item} key={item.id} />
+                                renderItem={({ item, index }) =>
+                                    item.archive ? null : <UINoteCard note={item} index={index} key={item.id} />
                                 }
                             />
                         </>
@@ -164,15 +112,18 @@ const styles = StyleSheet.create({
     input: {
         height: INPUT_HEIGHT,
         margin: INPUT_MARGIN,
-        color: colorScheme.primaryColor,
         fontWeight: 'bold',
         fontSize: INPUT_FONT_SIZE,
         padding: INPUT_PADDING,
     },
+    searchPlaceholder: { textAlign: 'center', flex: 1 },
     search: {
+        flexDirection: 'row',
         padding: SEARCH_PADDING,
+        borderColor: colorScheme.grey700,
+        borderWidth: 1,
+        borderStyle: 'dashed',
         borderRadius: SEARCH_BORDER_RADIUS,
-        backgroundColor: colorScheme.cyan100,
         marginBottom: SEARCH_MARGIN_BOTTOM,
         alignItems: 'center',
     },
