@@ -3,7 +3,6 @@ export interface TextDictionary {
 }
 
 export const dictionary: TextDictionary = {
-    nav: {},
     screens: {
         searchButton: 'Rechercher dans les notes et tags',
         searchPlaceholder: 'Rechercher dans les notes',
@@ -18,5 +17,4 @@ export const dictionary: TextDictionary = {
             tagsModalTitle: 'Ajouter un tag',
         },
     },
-    uiShared: {},
 };

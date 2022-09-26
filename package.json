@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --coverage--colors",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
@@ -55,6 +55,8 @@
     "typescript": "^4.4.4"
   },
   "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
     "preset": "react-native",
     "moduleFileExtensions": [
       "ts",
