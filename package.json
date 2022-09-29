@@ -6,6 +6,9 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "prebuild": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-ouput",
+    "build": "cd android && gradlew assembleDebug && cd ../",
+    "clear": "cd android && gradlew clean && cd ../",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
