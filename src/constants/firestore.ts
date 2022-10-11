@@ -1,2 +1,4 @@
-export const NOTES_COLLECTION_NAME = 'notes';
-export const TAGS_COLLECTION_NAME = 'tags';
+export enum CollectionName {
+    Notes = 'notes',
+    Tags = 'tags',
+}
