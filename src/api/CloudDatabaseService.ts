@@ -10,6 +10,8 @@ import { CollectionName } from '../constants/firestore';
 
 interface CloudDatabaseServiceSpecs<T> {
     addDocument(v: T): Promise<void>;
+    updateDocument(value: T): Promise<void>;
+    deleteDocument(documentId: string): Promise<void>;
 }
 
 export class CloudDatabaseService<T extends Note | Tag> implements CloudDatabaseServiceSpecs<T> {
