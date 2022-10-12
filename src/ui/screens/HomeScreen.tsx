@@ -10,7 +10,7 @@ import { UIContainer } from '../sharedComponents/UIContainer';
 import { UINoteCard } from '../sharedComponents/UINoteCard';
 import { UIText } from '../sharedComponents/UIText';
 import { dictionary } from '../../constants/dictionary';
-import { NOTES_COLLECTION_NAME } from '../../constants/firestore';
+import { CollectionName } from '../../constants/firestore';
 import { Note } from '../../models/NoteModel';
 import { useDocumentsListener } from '../../api/hooks/useDocumentsListener';
 
@@ -33,7 +33,7 @@ const SEARCH_MARGIN_BOTTOM = 20;
 
 export const HomeScreen: FunctionComponent = (): ReactElement => {
     const navigation = useNavigation<NavigationProp<StackNavigatorParamList>>();
-    const notesList = useDocumentsListener<Note>(NOTES_COLLECTION_NAME);
+    const notesList = useDocumentsListener<Note>(CollectionName.Notes);
 
     const notArchivedNotesList = (list: Note[]) => {
         return list.filter((note: Note) => !note.archive);

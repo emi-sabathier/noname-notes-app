@@ -12,8 +12,7 @@ import { UIHeader } from '../../navigation/UIHeader';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { clearSelectedTags } from '../../store/tagsSelectionSlice';
 import { UIChip } from '../sharedComponents/UIChip';
-import { CloudDatabaseService } from '../../api/CloudDatabaseService';
-import { CollectionName } from '../../constants/firestore';
+import { notesCloudDatabase } from '../../api/CloudDatabaseService';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -32,7 +31,6 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     const [noteColor, setNoteColor] = useState<NoteColor>('white');
     const { tagsSelected } = useAppSelector(state => state.tagsSelected);
     const [tagsList, setTagsList] = useState(tagsSelected);
-    const cloudDatabase = new CloudDatabaseService(CollectionName.Notes);
 
     const handleInputValues = (inputName: string, inputValue: string) => {
         setInputValues({
@@ -51,7 +49,12 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
             if (inputsValues.title !== '' || inputsValues.content !== '') {
-                await cloudDatabase.addDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsList });
+                await notesCloudDatabase.addDocument({
+                    ...inputsValues,
+                    archive: archiveStatus,
+                    noteColor,
+                    tags: tagsList,
+                });
                 dispatch(clearSelectedTags());
             }
         });

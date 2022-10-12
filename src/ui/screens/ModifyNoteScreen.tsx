@@ -6,12 +6,12 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationProp, RouteProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
-import { updateNoteDocument } from '../../api/notesCloudDatabaseService';
 import { UIScreenBottomBar } from '../sharedComponents/UIScreenBottomBar';
 import { UIHeader } from '../../navigation/UIHeader';
 import { addAlreadySelectedTags, clearSelectedTags } from '../../store/tagsSelectionSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { UIChip } from '../sharedComponents/UIChip';
+import { notesCloudDatabase } from '../../api/CloudDatabaseService';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -68,7 +68,7 @@ export const ModifyNoteScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
             if (inputsValues.title !== '' || inputsValues.content !== '') {
-                await updateNoteDocument({
+                await notesCloudDatabase.updateDocument({
                     ...inputsValues,
                     archive: archiveStatus,
                     noteColor: noteColorValue,

@@ -22,7 +22,7 @@ export class CloudDatabaseService<T extends Note | Tag> implements CloudDatabase
     async addDocument(value: T): Promise<void> {
         try {
             const document: FirestoreDocumentReference<FirestoreDocumentData> = this.db.doc();
-            const id = document.id;
+            const id: string = document.id;
             await this.db.doc(id).set({
                 id,
                 ...value,
@@ -33,4 +33,26 @@ export class CloudDatabaseService<T extends Note | Tag> implements CloudDatabase
             }
         }
     }
+
+    async updateDocument(value: T): Promise<void> {
+        try {
+            await this.db.doc(value.id).update(value);
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            }
+        }
+    }
+
+    async deleteDocument(documentId: string): Promise<void> {
+        try {
+            await this.db.doc(documentId).delete();
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            }
+        }
+    }
 }
+export const notesCloudDatabase = new CloudDatabaseService(CollectionName.Notes);
+export const tagsCloudDatabase = new CloudDatabaseService(CollectionName.Tags);
