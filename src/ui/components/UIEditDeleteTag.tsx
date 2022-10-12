@@ -1,15 +1,14 @@
 import React, { ReactElement, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Tag } from '../../models/TagModel';
 import { UIText } from '../sharedComponents/UIText';
 import { StyleSheet, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colorScheme } from '../../constants/colorScheme';
 import { UITouchableOpacity } from '../sharedComponents/UITouchableOpacity';
 import { UITextInput } from '../sharedComponents/UITextInput';
 import { dictionary } from '../../constants/dictionary';
-import { deleteTagDocument, updateTagDocument } from '../../api/tagsCloudDatabaseService';
-import { updateNoteDocument } from '../../api/notesCloudDatabaseService';
 import { useAppSelector } from '../../store/hooks';
+import { notesCloudDatabase, tagsCloudDatabase } from '../../api/CloudDatabaseService';
 
 const ICON_SIZE = 26;
 const INPUT_HEIGHT = 25;
@@ -41,13 +40,13 @@ export const UIEditDeleteTag = ({ tag }: UITagProps): ReactElement => {
     const updateTag = async (): Promise<void> => {
         if (editedTagValue !== '') {
             const id = tag.id ?? '';
-            await updateTagDocument({ ...tag, name: editedTagValue });
+            await tagsCloudDatabase.updateDocument({ ...tag, name: editedTagValue });
             notes.map(async note => {
                 const tags = note.tags ?? [];
                 const isTagExists = tags.some(t => t.id === id);
                 if (isTagExists) {
                     const tagsFiltered: Tag[] = tags.filter(t => t.id !== id);
-                    await updateNoteDocument({
+                    await notesCloudDatabase.updateDocument({
                         ...note,
                         tags: [...tagsFiltered, { ...tag, name: editedTagValue }],
                     });
@@ -59,10 +58,10 @@ export const UIEditDeleteTag = ({ tag }: UITagProps): ReactElement => {
 
     const deleteTag = async () => {
         const id = tag.id ?? '';
-        await deleteTagDocument(id);
+        await tagsCloudDatabase.deleteDocument(id);
         notes.map(async note => {
             const tagsFiltered = note.tags?.filter(t => t.id !== id);
-            await updateNoteDocument({ ...note, tags: tagsFiltered });
+            await notesCloudDatabase.updateDocument({ ...note, tags: tagsFiltered });
         });
         setEditTagVisible(false);
     };
