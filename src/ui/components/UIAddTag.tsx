@@ -6,7 +6,7 @@ import { UITextInput } from '../sharedComponents/UITextInput';
 import { dictionary } from '../../constants/dictionary';
 import { UIText } from '../sharedComponents/UIText';
 import { colorScheme } from '../../constants/colorScheme';
-import { addTagDocument } from '../../api/tagsCloudDatabaseService';
+import { tagsCloudDatabase } from '../../api/CloudDatabaseService';
 
 const ICON_SIZE = 26;
 const PLUS_ICON_SIZE = 30;
@@ -44,7 +44,7 @@ export const UIAddTag = () => {
         setAddTagVisible(false);
 
         if (tagValue !== '') {
-            await addTagDocument({ name: tagValue, color });
+            await tagsCloudDatabase.addDocument({ name: tagValue, color });
             setTagValue('');
             setAddTagVisible(false);
         }

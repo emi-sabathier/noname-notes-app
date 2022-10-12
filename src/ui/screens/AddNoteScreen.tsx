@@ -3,7 +3,6 @@ import { UIContainer } from '../sharedComponents/UIContainer';
 import { UITextInput } from '../sharedComponents/UITextInput';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { addNoteDocument } from '../../api/notesCloudDatabaseService';
 import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { StackNavigatorParamList } from '../../navigation/AppNavigation';
 import { Note, NoteColor } from '../../models/NoteModel';
@@ -13,6 +12,7 @@ import { UIHeader } from '../../navigation/UIHeader';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { clearSelectedTags } from '../../store/tagsSelectionSlice';
 import { UIChip } from '../sharedComponents/UIChip';
+import { notesCloudDatabase } from '../../api/CloudDatabaseService';
 
 const INPUT_HEIGHT = 50;
 const INPUT_MARGIN_BOTTOM = 10;
@@ -49,7 +49,12 @@ export const AddNoteScreen: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         const unsub = navigation.addListener('beforeRemove', async e => {
             if (inputsValues.title !== '' || inputsValues.content !== '') {
-                await addNoteDocument({ ...inputsValues, archive: archiveStatus, noteColor, tags: tagsList });
+                await notesCloudDatabase.addDocument({
+                    ...inputsValues,
+                    archive: archiveStatus,
+                    noteColor,
+                    tags: tagsList,
+                });
                 dispatch(clearSelectedTags());
             }
         });

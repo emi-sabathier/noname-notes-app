@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { TAGS_COLLECTION_NAME } from '../../constants/firestore';
+import { CollectionName } from '../../constants/firestore';
 import { FlatList, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UIText } from '../sharedComponents/UIText';
@@ -38,7 +38,7 @@ export const UITagSelection = (): ReactElement => {
 
     useEffect(() => {
         (async () => {
-            const data = await getDataOnce<Tag>(TAGS_COLLECTION_NAME);
+            const data = await getDataOnce<Tag>(CollectionName.Tags);
             const documentsList = data.docs.map(item => item.data());
             setTagsList(documentsList as Tag[]);
             setCheckedState(documentsList);
